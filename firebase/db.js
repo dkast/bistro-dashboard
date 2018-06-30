@@ -1,4 +1,6 @@
-import { db } from "./firebase";
+import firebase from "./firebase";
+
+const db = firebase.database();
 
 // User API
 export const doCreateUser = (id, username, email) =>
