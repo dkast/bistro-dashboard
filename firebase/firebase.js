@@ -13,8 +13,10 @@ const config = {
 
 if (!firebase.apps.length) {
   firebase.initializeApp(config);
+  console.log("App initialized");
 }
 
 const auth = firebase.auth();
 const db = firebase.firestore();
-export { auth, db };
+const app = firebase;
+export { auth, db, app };
