@@ -7,6 +7,7 @@ import { auth } from "../firebase";
 import { connect } from "react-redux";
 import Head from "../components/head";
 import CenterFrame from "./../components/layout/centerFrame";
+import withFirestore from "../utils";
 
 const SignUpPage = () => (
   <>
@@ -50,7 +51,9 @@ class SignUpForm extends Component {
     auth
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        //TODO: Create user in your own database
+        //Create a User in the database
+        const { firestore } = this.context.store;
+        firestore.add({ collection: 'cities' }, { name: 'Piedras Negras' })
       })
       .catch(error => {
         this.setState = {
