@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import Link from "next/link";
 import Router from "next/router";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import { compose } from "redux";
 import { PageWithAuthentication } from "../components/app";
 import { auth } from "../firebase";
 import { connect } from "react-redux";
@@ -43,7 +44,7 @@ class SignUpForm extends Component {
 
   static contextTypes = {
     store: PropTypes.object.isRequired
-  }
+  };
 
   onSubmit = event => {
     const { username, email, passwordOne } = this.state;
@@ -53,7 +54,7 @@ class SignUpForm extends Component {
       .then(authUser => {
         //Create a User in the database
         const { firestore } = this.context.store;
-        firestore.add({ collection: 'cities' }, { name: 'Piedras Negras' })
+        firestore.add({ collection: "cities" }, { name: "Piedras Negras" });
       })
       .catch(error => {
         this.setState = {
@@ -67,9 +68,9 @@ class SignUpForm extends Component {
   onTest = event => {
     alert("OK!");
     const { firestore } = this.context.store;
-    firestore.add({ collection: 'cities' }, { name: 'Piedras Negras' })
+    firestore.add({ collection: "cities" }, { name: "Piedras Negras" });
     event.preventDefault();
-  }
+  };
 
   render() {
     const { username, email, passwordOne, passwordTwo, error } = this.state;
@@ -135,17 +136,18 @@ class SignUpForm extends Component {
         >
           Sig Up
         </button>
-        <button
-          className="btn btn-purple btn-block mb-3"
-          onClick={this.onTest}
-        >Test</button>
+        <button className="btn btn-purple btn-block mb-3" onClick={this.onTest}>
+          Test
+        </button>
         {error && <div className="alert alert-danger">{error.message}</div>}
       </form>
     );
   }
 }
 
-export default connect((state) => ({
+export default compose(
+  withFirestore,
+  connect(state => ({
     firebase: state.firebase
-  })
+  }))
 )(SignUpPage);
