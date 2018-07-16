@@ -10,14 +10,14 @@ class CenterFrame extends React.Component {
               {this.props.children}
             </div>
           </div>
+          <style jsx>
+            {`
+              .center-frame {
+                min-height: 100vh;
+              }
+            `}
+          </style>
         </div>
-        <style jsx>
-          {`
-            .center-frame {
-              min-height: 100vh;
-            }
-          `}
-        </style>
       </>
     );
   }

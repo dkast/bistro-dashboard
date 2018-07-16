@@ -6,6 +6,8 @@
     "start": "NODE_ENV=production node server"
   },
   "dependencies": {
+    "@trendmicro/react-sidenav": "^0.4.5",
+    "@zeit/next-css": "^0.2.0",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "firebase": "^5.2.0",

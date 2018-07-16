@@ -6,7 +6,7 @@ import userReducer from "./user";
 const rootReducer = combineReducers({
   sessionState: sessionReducer,
   userState: userReducer,
-  firestore: firestoreReducer
+  firestoreState: firestoreReducer
 });
 
 export default rootReducer;
