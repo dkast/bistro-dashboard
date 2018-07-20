@@ -15474,7 +15474,7 @@ a.tag-addon:hover {
   font-style: normal;
 }
 
-.browser-android-browser {
+/* .browser-android-browser {
   background-image: url("../images/browsers/android-browser.svg");
 }
 
@@ -17018,7 +17018,7 @@ a.tag-addon:hover {
 
 .payment-worldpay {
   background-image: url("../images/payments/worldpay.svg");
-}
+} */
 
 svg {
   -ms-touch-action: none;

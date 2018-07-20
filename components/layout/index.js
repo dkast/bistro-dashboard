@@ -1,54 +1,29 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import SideNav, {
-  Toggle,
-  Nav,
-  NavItem,
-  NavIcon,
-  NavText
-} from "@trendmicro/react-sidenav";
+import SideBar from "./sideBar";
 
 class Layout extends Component {
-  // state = {
-  //   selected: "home",
-  //   expanded: false
-  // };
 
   render() {
-    // const { selected, expanded } = this.state;
+    const { sideBarExpanded, sideBarSelected } = this.props;
+    
     return (
       <div className="wrapper">
-        <SideBar />
-        <div className="container-fluid">{this.props.children}</div>
+        <SideBar selected={sideBarSelected} />
+        <div className="main">
+          <div className="container-fluid">{this.props.children}</div>
+        </div>
         <style jsx>
           {`
-            .container-fluid {
-              margin-left: 64px;
+            .main {
+              position: relative;
+              overflow: hidden;
+              transition: all .15s;
+              margin-left: ${sideBarExpanded ? '240' : '64'}px;
             }
           `}
         </style>
       </div>
-    );
-  }
-}
-
-class SideBar extends Component {
-  onToggle = expanded => {
-    //TODO: link to dispatch
-  };
-
-  render() {
-    return (
-      <SideNav onToggle={this.onToggle}>
-        <SideNav.Toggle />
-        <SideNav.Nav defaultSelected="home" />
-        <NavItem eventKey="home">
-          <NavIcon>
-            <i className="fe fe-mail" />
-          </NavIcon>
-          <NavText>Home</NavText>
-        </NavItem>
-      </SideNav>
     );
   }
 }
@@ -58,12 +33,6 @@ const mapStateToProps = state => ({
   sideBarSelected: state.uiState.sideBarSelected
 });
 
-const mapDispatchToProps = dispatch => ({
-  onSetSideBarExpanded: sideBarExpanded =>
-    dispatch({ type: "SIDEBAR_EXPANDED_SET", sideBarExpanded })
-});
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(Layout);
