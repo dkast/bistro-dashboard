@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import SideBar from "./sideBar";
+import SideBar from "../navigation/sideBar";
 
 class Layout extends Component {
-
   render() {
     const { sideBarExpanded, sideBarSelected } = this.props;
-    
+
     return (
       <div className="wrapper">
         <SideBar selected={sideBarSelected} />
@@ -18,8 +17,8 @@ class Layout extends Component {
             .main {
               position: relative;
               overflow: hidden;
-              transition: all .15s;
-              margin-left: ${sideBarExpanded ? '240' : '64'}px;
+              transition: all 0.15s;
+              margin-left: ${sideBarExpanded ? "240" : "64"}px;
             }
           `}
         </style>
@@ -33,6 +32,4 @@ const mapStateToProps = state => ({
   sideBarSelected: state.uiState.sideBarSelected
 });
 
-export default connect(
-  mapStateToProps
-)(Layout);
+export default connect(mapStateToProps)(Layout);

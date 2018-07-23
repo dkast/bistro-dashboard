@@ -12,21 +12,22 @@ class Page extends Component {
     const { authUser } = this.props;
     return (
       <>
-        <Head title="Home" />
+        <Head title="Items" />
         <PageWithAuthorization>
-          {authUser && <Dashboard {...this.props} />}
+          {authUser && <ItemsPage {...this.props} />}
         </PageWithAuthorization>
       </>
     );
   }
 }
 
-const Dashboard = props => (
+const ItemsPage = props => (
   <Layout>
-    <h1>Home</h1>
-    <button className="btn btn-primary" onClick={auth.doSignOut}>
-      Sign Out
-    </button>
+    <div className="row">
+      <div className="col p-5">
+        <h3>Items</h3>
+      </div>
+    </div>
   </Layout>
 );
 
