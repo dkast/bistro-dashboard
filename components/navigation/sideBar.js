@@ -17,7 +17,7 @@ class SideBar extends Component {
   };
 
   onSelect = selected => {
-    this.props.onSetSideBarSelected(selected);
+    this.props.onSetRouteSelected(selected);
     Router.push(selected);
   };
 
@@ -68,8 +68,8 @@ class SideBar extends Component {
 const mapDispatchToProps = dispatch => ({
   onSetSideBarExpanded: sideBarExpanded =>
     dispatch({ type: "SIDEBAR_EXPANDED_SET", sideBarExpanded }),
-  onSetSideBarSelected: sideBarSelected =>
-    dispatch({ type: "SIDEBAR_SELECTED_SET", sideBarSelected })
+  onSetRouteSelected: routeSelected =>
+    dispatch({ type: "SIDEBAR_SELECTED_SET", routeSelected })
 });
 
 export default connect(

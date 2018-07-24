@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
   sideBarExpanded: false,
-  sideBarSelected: "/"
+  routeSelected: "/"
 };
 
 const applySetSideBarExpanded = (state, action) => ({
@@ -8,9 +8,9 @@ const applySetSideBarExpanded = (state, action) => ({
   sideBarExpanded: action.sideBarExpanded
 });
 
-const applySetSideBarSelected = (state, action) => ({
+const applySetRouteSelected = (state, action) => ({
   ...state,
-  sideBarSelected: action.sideBarSelected
+  routeSelected: action.routeSelected
 });
 
 function uiReducer(state = INITIAL_STATE, action) {
@@ -19,7 +19,7 @@ function uiReducer(state = INITIAL_STATE, action) {
       return applySetSideBarExpanded(state, action);
       break;
     case "SIDEBAR_SELECTED_SET":
-      return applySetSideBarSelected(state, action);
+      return applySetRouteSelected(state, action);
     default:
       return state;
   }

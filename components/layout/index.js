@@ -4,11 +4,11 @@ import SideBar from "../navigation/sideBar";
 
 class Layout extends Component {
   render() {
-    const { sideBarExpanded, sideBarSelected } = this.props;
+    const { sideBarExpanded, routeSelected } = this.props;
 
     return (
       <div className="wrapper">
-        <SideBar selected={sideBarSelected} />
+        <SideBar selected={routeSelected} />
         <div className="main">
           <div className="container-fluid">{this.props.children}</div>
         </div>
@@ -29,7 +29,7 @@ class Layout extends Component {
 
 const mapStateToProps = state => ({
   sideBarExpanded: state.uiState.sideBarExpanded,
-  sideBarSelected: state.uiState.sideBarSelected
+  routeSelected: state.uiState.routeSelected
 });
 
 export default connect(mapStateToProps)(Layout);

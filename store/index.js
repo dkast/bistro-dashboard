@@ -1,5 +1,6 @@
 import { createStore, combineReducers, compose } from "redux";
 import { reduxFirestore } from "redux-firestore";
+import { devToolsEnhancer } from "redux-devtools-extension";
 import rootReducer from "./reducers";
 import { firebase } from "../firebase";
 
@@ -11,12 +12,11 @@ const createStoreWithFirebase = compose(reduxFirestore(firebase.app))(
   createStore
 );
 
-const initStore = () => {
+const initStore = (initialState = {}, options) => {
   const store = createStoreWithFirebase(
     rootReducer,
-    typeof window !== "undefined" &&
-      window.__REDUX_DEVTOOLS_EXTENSION__ &&
-      window.__REDUX_DEVTOOLS_EXTENSION__()
+    initialState,
+    devToolsEnhancer()
   );
 
   return store;

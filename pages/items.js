@@ -8,6 +8,15 @@ import Head from "../components/head";
 import Layout from "../components/layout";
 
 class Page extends Component {
+  // static async getInitialProps({ store, isServer, pathname, query }) {
+  //   console.log(isServer);
+  //   console.log(pathname);
+  //   store.dispatch({
+  //     type: "SIDEBAR_SELECTED_SET",
+  //     routeSelected: pathname
+  //   });
+  // }
+
   render() {
     const { authUser } = this.props;
     return (

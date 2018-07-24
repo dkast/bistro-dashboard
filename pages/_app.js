@@ -12,7 +12,7 @@ export default withRedux(initStore)(
         console.log(pathname);
         ctx.store.dispatch({
           type: "SIDEBAR_SELECTED_SET",
-          pathname
+          routeSelected: pathname
         });
       }
 
