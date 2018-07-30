@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// import Link from "next/link";
 
 import { PageWithAuthorization } from "../components/app";
 import { auth } from "../firebase";
 import Head from "../components/head";
 import Layout from "../components/layout";
+import ItemsNavigation from "../components/navigation/itemsNavigation";
 
 class Page extends Component {
   // static async getInitialProps({ store, isServer, pathname, query }) {
@@ -33,8 +33,9 @@ class Page extends Component {
 const ItemsPage = props => (
   <Layout>
     <div className="row">
-      <div className="col p-5">
+      <div className="col m-5">
         <h3>Items</h3>
+        <ItemsNavigation />
       </div>
     </div>
   </Layout>

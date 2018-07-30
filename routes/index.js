@@ -3,6 +3,7 @@ const routes = (module.exports = nextRoutes());
 
 routes.add("index", "/");
 routes.add("items", "/items");
+routes.add("modifiers", "items/modifiers");
 routes.add("account", "/user/:id");
 routes.add("signin", "/signin");
 routes.add("signup", "/signup");
