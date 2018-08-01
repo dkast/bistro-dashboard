@@ -10,7 +10,7 @@ class Layout extends Component {
       <div className="wrapper">
         <SideBar selected={routeSelected} />
         <div className="main">
-          <div className="container-fluid">{this.props.children}</div>
+          <div className="container">{this.props.children}</div>
         </div>
         <style jsx>
           {`

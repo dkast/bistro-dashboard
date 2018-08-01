@@ -43,10 +43,6 @@ class SignUpForm extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
-  static contextTypes = {
-    store: PropTypes.object.isRequired
-  };
-
   onSubmit = event => {
     const { username, email, passwordOne } = this.state;
 
