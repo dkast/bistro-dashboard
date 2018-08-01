@@ -20,6 +20,10 @@ class Layout extends Component {
               transition: all 0.15s;
               margin-left: ${sideBarExpanded ? "240" : "64"}px;
             }
+
+            .wrapper {
+              position: relative;
+            }
           `}
         </style>
       </div>

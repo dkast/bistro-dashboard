@@ -45,11 +45,11 @@ class ItemsPage extends Component {
     const columns = [
       {
         Header: "username",
-        accesor: "username"
+        accessor: "username"
       },
       {
         Header: "email",
-        accesor: "email"
+        accessor: "email"
       }
     ];
     console.log("users", users);

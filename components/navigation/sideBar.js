@@ -23,7 +23,7 @@ class SideBar extends Component {
 
   render() {
     return (
-      <div>
+      <>
         <SideNav onToggle={this.onToggle} onSelect={this.onSelect}>
           <Toggle />
           <Nav selected={this.props.selected}>
@@ -60,7 +60,7 @@ class SideBar extends Component {
             color: rgba(255, 255, 255, 0.8) !important;
           }
         `}</style>
-      </div>
+      </>
     );
   }
 }
