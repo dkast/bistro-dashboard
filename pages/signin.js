@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Router from "next/router";
 import { connect } from "react-redux";
 
 import { PageWithAuthentication } from "../components/app";
@@ -7,7 +6,7 @@ import { auth } from "../firebase";
 import { SignUpLink } from "./signup";
 import CenterFrame from "./../components/layout/centerFrame";
 import Head from "../components/head";
-import { Link } from "../routes";
+import { Link, Router } from "../routes";
 
 const SignInPage = () => (
   <>
@@ -50,7 +49,7 @@ class SignInForm extends Component {
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState(() => ({ ...INITIAL_STATE }));
-        Router.push("/");
+        Router.pushRoute("/");
       })
       .catch(error => {
         this.setState({

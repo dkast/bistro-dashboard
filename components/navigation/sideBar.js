@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import css from "styled-jsx/css";
-import Router from "next/router";
 import SideNav, {
   Toggle,
   Nav,
@@ -10,6 +9,7 @@ import SideNav, {
   NavText
 } from "@trendmicro/react-sidenav";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
+import { Router } from "../../routes";
 
 class SideBar extends Component {
   onToggle = expanded => {
@@ -18,7 +18,7 @@ class SideBar extends Component {
 
   onSelect = selected => {
     this.props.onSetRouteSelected(selected);
-    Router.push(selected);
+    Router.pushRoute(selected);
   };
 
   render() {
