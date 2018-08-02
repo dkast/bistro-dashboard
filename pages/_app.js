@@ -30,11 +30,19 @@ export default withRedux(initStore)(
       const { Component, pageProps, store } = this.props;
       //console.log(this.props);
       return (
-        <Container>
-          <Provider store={store}>
-            <Component {...pageProps} />
-          </Provider>
-        </Container>
+        <>
+          <Container>
+            <Provider store={store}>
+              <Component {...pageProps} />
+            </Provider>
+          </Container>
+          <style jsx global>{`
+            #__next,
+            .app {
+              height: 100%;
+            }
+          `}</style>
+        </>
       );
     }
   }

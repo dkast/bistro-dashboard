@@ -16,7 +16,7 @@ const SignUpPage = props => (
   <PageWithAuthentication>
     <Head title="Sign Up" />
     <CenterFrame>
-      <div className="col-sm-4">
+      <div className="col-md-6">
         <div className="card shadow-lg">
           <div className="card-body p-6">
             <h5 className="card-title">Create New Account</h5>

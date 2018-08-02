@@ -23,6 +23,7 @@ class Layout extends Component {
 
             .wrapper {
               position: relative;
+              min-height: 100%;
             }
           `}
         </style>

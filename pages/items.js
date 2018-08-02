@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import ReactTable from "react-table";
 import PropTypes from "prop-types";
 
 import { PageWithAuthorization } from "../components/app";
@@ -8,9 +7,10 @@ import Head from "../components/head";
 import Layout from "../components/layout";
 import ItemsNavigation from "../components/navigation/itemsNavigation";
 import withFirestore from "../utils";
+import SimpleTable from "../components/datatables/simpleTable";
 
 const listenerSettings = {
-  collection: "users"
+  collection: "items"
 };
 
 class Page extends Component {
@@ -41,35 +41,36 @@ class Page extends Component {
 
 class ItemsPage extends Component {
   render() {
-    const { users } = this.props;
+    const { items } = this.props;
     const columns = [
       {
-        Header: "username",
-        accessor: "username"
+        Header: "Product",
+        accessor: "product"
       },
       {
-        Header: "email",
-        accessor: "email"
+        Header: "Category",
+        accessor: "category"
+      },
+      {
+        Header: "Price",
+        accessor: "price"
       }
     ];
-    console.log("users", users);
+    let isLoading = false;
+
     return (
       <Layout>
         <div className="row">
           <div className="col m-5">
             <h3>Items</h3>
             <ItemsNavigation />
-            <div className="toolbar my-2">
+            <div className="toolbar mt-5 mb-2">
               <div className="form-inline d-flex justify-content-between">
                 <input type="text" className="form-control" />
                 <button className="btn btn-azure">Add Item</button>
               </div>
             </div>
-            <div>
-              {users !== undefined ? (
-                <ReactTable data={users} columns={columns} />
-              ) : null}
-            </div>
+            <SimpleTable data={items} columns={columns} />
           </div>
         </div>
       </Layout>
@@ -79,7 +80,7 @@ class ItemsPage extends Component {
 
 const mapStateToProps = state => ({
   authUser: state.sessionState.authUser,
-  users: state.firestoreState.ordered.users
+  users: state.firestoreState.ordered.items
 });
 
 export default withFirestore(connect(mapStateToProps)(Page));
