@@ -3,7 +3,11 @@ import { compose } from "recompose";
 import withAuthentication from "../session/withAuthentication";
 import withAuthorization from "../session/withAuthorization";
 
-const Page = ({ children }) => <div className="app">{children}</div>;
+const Page = ({ children }) => (
+  <div {...this.props} className="app">
+    {children}
+  </div>
+);
 
 const PageWithAuthentication = compose(
   withAuthentication,

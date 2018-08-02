@@ -1,28 +1,32 @@
 import React, { Component } from "react";
-import Link from "next/link";
 import Router from "next/router";
+import PropTypes from "prop-types";
+import { compose } from "redux";
+
 import { PageWithAuthentication } from "../components/app";
 import { auth } from "../firebase";
 import { connect } from "react-redux";
-import Head from "../components/head";
+import { SignInLink } from "./signin";
 import CenterFrame from "./../components/layout/centerFrame";
+import withFirestore from "../utils";
+import Head from "../components/head";
+import { Link } from "../routes";
 
-const SignUpPage = () => (
-  <>
+const SignUpPage = props => (
+  <PageWithAuthentication>
     <Head title="Sign Up" />
-    <PageWithAuthentication>
-      <CenterFrame>
-        <div className="col-sm-4">
-          <div className="card shadow-lg">
-            <div className="card-body p-6">
-              <h5 className="card-title">Create New Account</h5>
-              <SignUpForm />
-            </div>
+    <CenterFrame>
+      <div className="col-md-6">
+        <div className="card shadow-lg">
+          <div className="card-body p-6">
+            <h5 className="card-title">Create New Account</h5>
+            <SignUpForm {...props} />
+            <SignInLink />
           </div>
         </div>
-      </CenterFrame>
-    </PageWithAuthentication>
-  </>
+      </div>
+    </CenterFrame>
+  </PageWithAuthentication>
 );
 
 const INITIAL_STATE = {
@@ -45,12 +49,31 @@ class SignUpForm extends Component {
     auth
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        //TODO: Create user in your own database
+        console.log(authUser);
+        //Create a User in the database
+        this.props.firestore
+          .add(
+            { collection: "users" },
+            {
+              uid: authUser.user.uid,
+              username: username,
+              email: email
+            }
+          )
+          .then(() => {
+            this.setState(() => ({ ...INITIAL_STATE }));
+            Router.push("/");
+          })
+          .catch(error => {
+            this.setState({
+              error: error
+            });
+          });
       })
       .catch(error => {
-        this.setState = {
+        this.setState({
           error: error
-        };
+        });
       });
 
     event.preventDefault();
@@ -63,7 +86,7 @@ class SignUpForm extends Component {
       passwordOne !== passwordTwo || passwordOne === "" || username === "";
 
     return (
-      <form onSubmit="this.onSubmit">
+      <form onSubmit={this.onSubmit}>
         <div className="form-group">
           <label className="form-label">Name</label>
           <input
@@ -114,17 +137,34 @@ class SignUpForm extends Component {
           />
         </div>
         <button
-          className="btn btn-primary btn-block mb-3"
+          className="btn btn-azure btn-block mb-3"
           disabled={isInvalid}
           type="submit"
         >
-          Sig Up
+          Sign Up
         </button>
-
-        {error && <div className="alert alert-danger">{error.message}</div>}
+        {error && (
+          <div className="alert alert-danger mb-3">{error.message}</div>
+        )}
       </form>
     );
   }
 }
 
-export default connect()(SignUpPage);
+const SignUpLink = () => (
+  <span>
+    Don't have an account?{" "}
+    <Link route="signup">
+      <a>Sign Up</a>
+    </Link>
+  </span>
+);
+
+export default compose(
+  withFirestore,
+  connect(state => ({
+    firestoreState: state.firestoreState
+  }))
+)(SignUpPage);
+
+export { SignUpLink };

@@ -40,6 +40,8 @@ const Head = props => (
     />
     <link href="/static/css/tabler.css" rel="stylesheet" />
     <link href="/static/css/bg-svg.css" rel="stylesheet" />
+    {/* Using Next-CSS plugin */}
+    <link href="/_next/static/style.css" rel="stylesheet" />
   </NextHead>
 );
 

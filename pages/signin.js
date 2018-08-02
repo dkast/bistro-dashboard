@@ -1,10 +1,13 @@
 import React, { Component } from "react";
-import { Router } from "next/router";
+import Router from "next/router";
+import { connect } from "react-redux";
+
 import { PageWithAuthentication } from "../components/app";
 import { auth } from "../firebase";
-import { connect } from "react-redux";
-import Head from "../components/head";
+import { SignUpLink } from "./signup";
 import CenterFrame from "./../components/layout/centerFrame";
+import Head from "../components/head";
+import { Link } from "../routes";
 
 const SignInPage = () => (
   <>
@@ -17,6 +20,7 @@ const SignInPage = () => (
               <div className="card-body p-6">
                 <h5 className="card-title">Welcome</h5>
                 <SignInForm />
+                <SignUpLink />
               </div>
             </div>
             <div className="card bg-svg text-light d-none d-md-none d-lg-block" />
@@ -100,17 +104,30 @@ class SignInForm extends Component {
         </div>
 
         <button
-          className="btn btn-primary btn-block mb-3"
+          className="btn btn-azure btn-block mb-3"
           disabled={isInvalid}
           type="submit"
         >
-          Sig In
+          Sign In
         </button>
 
-        {error && <div className="alert alert-danger">{error.message}</div>}
+        {error && (
+          <div className="alert alert-danger mb-3">{error.message}</div>
+        )}
       </form>
     );
   }
 }
 
+const SignInLink = () => (
+  <span>
+    Already have an account?{" "}
+    <Link route="signin">
+      <a>Sign In</a>
+    </Link>
+  </span>
+);
+
 export default connect()(SignInPage);
+
+export { SignInLink };
