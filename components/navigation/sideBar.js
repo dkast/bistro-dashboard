@@ -36,7 +36,7 @@ class SideBar extends Component {
               </NavIcon>
               <NavText>Home</NavText>
             </NavItem>
-            <NavItem eventKey="/items">
+            <NavItem eventKey="/items/library">
               <NavIcon>
                 <i
                   className="fe fe-grid"

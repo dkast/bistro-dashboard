@@ -8,6 +8,7 @@ import Layout from "../components/layout";
 import ItemsNavigation from "../components/navigation/itemsNavigation";
 import withFirestore from "../utils";
 import SimpleTable from "../components/datatables/simpleTable";
+import { Link } from "../routes";
 
 const listenerSettings = {
   collection: "items"
@@ -67,7 +68,10 @@ class ItemsPage extends Component {
             <div className="toolbar mt-5 mb-2">
               <div className="form-inline d-flex justify-content-between">
                 <input type="text" className="form-control" />
-                <button className="btn btn-azure">Add Item</button>
+                {/* <button className="btn btn-azure">Add Item</button> */}
+                <Link route="item-detail" params={{ id: "new" }}>
+                  <a className="btn btn-azure">Create Item</a>
+                </Link>
               </div>
             </div>
             <SimpleTable data={items} columns={columns} />
