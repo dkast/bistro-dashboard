@@ -24,7 +24,11 @@ class SideBar extends Component {
   render() {
     return (
       <>
-        <SideNav onToggle={this.onToggle} onSelect={this.onSelect}>
+        <SideNav
+          onToggle={this.onToggle}
+          onSelect={this.onSelect}
+          expanded={this.props.expanded}
+        >
           <Toggle />
           <Nav selected={this.props.selected}>
             <NavItem eventKey="/">

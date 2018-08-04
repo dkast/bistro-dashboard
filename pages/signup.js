@@ -13,7 +13,6 @@ import { Link, Router } from "../routes";
 
 const SignUpPage = props => (
   <PageWithAuthentication>
-    <Head title="Sign Up" />
     <CenterFrame>
       <div className="col-md-6">
         <div className="card shadow-lg">

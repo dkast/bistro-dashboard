@@ -9,25 +9,22 @@ import Head from "../components/head";
 import { Link, Router } from "../routes";
 
 const SignInPage = () => (
-  <>
-    <Head title="Sign In" />
-    <PageWithAuthentication>
-      <CenterFrame>
-        <div className="col-md-8">
-          <div className="card-group shadow-lg">
-            <div className="card">
-              <div className="card-body p-6">
-                <h5 className="card-title">Welcome</h5>
-                <SignInForm />
-                <SignUpLink />
-              </div>
+  <PageWithAuthentication>
+    <CenterFrame>
+      <div className="col-md-8">
+        <div className="card-group shadow-lg">
+          <div className="card">
+            <div className="card-body p-6">
+              <h5 className="card-title">Welcome</h5>
+              <SignInForm />
+              <SignUpLink />
             </div>
-            <div className="card bg-svg text-light d-none d-md-none d-lg-block" />
           </div>
+          <div className="card bg-svg text-light d-none d-md-none d-lg-block" />
         </div>
-      </CenterFrame>
-    </PageWithAuthentication>
-  </>
+      </div>
+    </CenterFrame>
+  </PageWithAuthentication>
 );
 
 const INITIAL_STATE = {

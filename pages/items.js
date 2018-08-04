@@ -30,12 +30,9 @@ class Page extends Component {
   render() {
     const { authUser } = this.props;
     return (
-      <>
-        <Head title="Items" />
-        <PageWithAuthorization>
-          {authUser && <ItemsPage {...this.props} />}
-        </PageWithAuthorization>
-      </>
+      <PageWithAuthorization>
+        {authUser && <ItemsPage {...this.props} />}
+      </PageWithAuthorization>
     );
   }
 }

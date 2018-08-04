@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import SideBar from "../navigation/sideBar";
+import NProgressStyles from "next-nprogress/styles";
 
 class Layout extends Component {
   render() {
@@ -8,7 +9,8 @@ class Layout extends Component {
 
     return (
       <div className="wrapper">
-        <SideBar selected={routeSelected} />
+        <NProgressStyles color="#29d" spinner={false} />
+        <SideBar selected={routeSelected} expanded={sideBarExpanded} />
         <div className="main">
           <div className="container-fluid">{this.props.children}</div>
         </div>
