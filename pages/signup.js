@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Router from "next/router";
 import PropTypes from "prop-types";
 import { compose } from "redux";
 
@@ -10,11 +9,10 @@ import { SignInLink } from "./signin";
 import CenterFrame from "./../components/layout/centerFrame";
 import withFirestore from "../utils";
 import Head from "../components/head";
-import { Link } from "../routes";
+import { Link, Router } from "../routes";
 
 const SignUpPage = props => (
   <PageWithAuthentication>
-    <Head title="Sign Up" />
     <CenterFrame>
       <div className="col-md-6">
         <div className="card shadow-lg">
@@ -62,7 +60,7 @@ class SignUpForm extends Component {
           )
           .then(() => {
             this.setState(() => ({ ...INITIAL_STATE }));
-            Router.push("/");
+            Router.pushRoute("/");
           })
           .catch(error => {
             this.setState({

@@ -12,7 +12,6 @@ class Page extends Component {
     const { authUser } = this.props;
     return (
       <>
-        <Head title="Home" />
         <PageWithAuthorization>
           {authUser && <Dashboard {...this.props} />}
         </PageWithAuthorization>

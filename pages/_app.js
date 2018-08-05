@@ -3,17 +3,22 @@ import { Provider } from "react-redux";
 import App, { Container } from "next/app";
 import withRedux from "next-redux-wrapper";
 import "react-table/react-table.css";
+import withNProgress from "next-nprogress";
+
 import initStore from "../store";
 
-export default withRedux(initStore)(
+const MS_DELAY = 200;
+const CONFIG_OPTIONS = { trickleSpeed: 50 };
+
+export default withNProgress(MS_DELAY, CONFIG_OPTIONS)(withRedux(initStore))(
   class MyApp extends App {
-    static async getInitialProps({ Component, ctx, pathname }) {
+    static async getInitialProps({ Component, ctx }) {
       if (ctx.isServer) {
-        const pathname = ctx.pathname;
-        console.log(pathname);
+        const asPath = ctx.asPath;
+        console.log(asPath);
         ctx.store.dispatch({
           type: "SIDEBAR_SELECTED_SET",
-          routeSelected: pathname
+          routeSelected: asPath
         });
       }
 

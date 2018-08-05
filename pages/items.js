@@ -7,7 +7,7 @@ import Head from "../components/head";
 import Layout from "../components/layout";
 import ItemsNavigation from "../components/navigation/itemsNavigation";
 import withFirestore from "../utils";
-import SimpleTable from "../components/datatables/simpleTable";
+import SimpleTable from "../components/datatable/simpleTable";
 import { Link } from "../routes";
 
 const listenerSettings = {
@@ -30,12 +30,9 @@ class Page extends Component {
   render() {
     const { authUser } = this.props;
     return (
-      <>
-        <Head title="Items" />
-        <PageWithAuthorization>
-          {authUser && <ItemsPage {...this.props} />}
-        </PageWithAuthorization>
-      </>
+      <PageWithAuthorization>
+        {authUser && <ItemsPage {...this.props} />}
+      </PageWithAuthorization>
     );
   }
 }
