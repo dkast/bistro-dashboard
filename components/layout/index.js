@@ -21,11 +21,17 @@ class Layout extends Component {
               overflow: hidden;
               transition: all 0.15s;
               margin-left: ${sideBarExpanded ? "240" : "64"}px;
+              height: 100%;
             }
 
             .wrapper {
               position: relative;
               min-height: 100%;
+              height: 100%;
+            }
+
+            .container-fluid {
+              height: 100%;
             }
           `}
         </style>
