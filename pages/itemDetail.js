@@ -5,6 +5,7 @@ import * as Yup from "yup";
 
 import { PageWithAuthorization } from "../components/app";
 import Layout from "../components/layout";
+import { Link } from "../routes";
 
 class Page extends Component {
   render() {
@@ -27,6 +28,7 @@ class ItemDetailPage extends Component {
         <Form className="form-sheet">
           <SheetView
             title={"Crear Nuevo Item"}
+            routeBack={"items"}
             content={<ItemForm {...this.props} />}
             footer={
               <button
@@ -71,10 +73,36 @@ class ItemForm extends Component {
   state = {};
   render() {
     return (
-      <div>
-        <Field type="text" name="name" />
-        {this.props.touched.name &&
-          this.props.errors.name && <p>{this.props.errors.name}</p>}
+      <div className="row d-flex justify-content-center mt-4">
+        <div className="col-sm-8">
+          <div className="form-section my-4 border-bottom">
+            <h4>Información Básica</h4>
+          </div>
+          <div className="row">
+            <div className="col">
+              <label>Nombre del Producto</label>
+              <Field
+                type="text"
+                name="name"
+                className="form-control"
+                placeholder={"Nombre del Producto"}
+              />
+            </div>
+            <div className="col">
+              <label>SKU del Producto</label>
+              <Field
+                type="text"
+                name="sku"
+                className="form-control"
+                placeholder={"Nombre del Producto"}
+              />
+            </div>
+            {this.props.touched.sku &&
+              this.props.errors.sku && (
+                <small className="text-danger">{this.props.errors.sku}</small>
+              )}
+          </div>
+        </div>
       </div>
     );
   }
@@ -83,14 +111,22 @@ class ItemForm extends Component {
 const SheetView = props => (
   <span>
     <div className="row sheet-view d-flex flex-column">
-      <div className="bg-azure-dark text-light sheet-title py-5 px-3">
-        <h4 className="m-0">{props.title}</h4>
-      </div>
-      <div className="flex-grow-1 sheet-body px-3">
-        <div className="row d-flex justify-content-center">
-          <div className="col-sm-6">{props.content}</div>
+      <div className="bg-azure-dark text-light sheet-navbar pt-5 px-3">
+        <div className="row">
+          <div className="col-2 h5">
+            <Link route={props.routeBack}>
+              <a className="back-button">
+                <i className="fe fe-chevron-left mr-1" />
+                <span>Regresar</span>
+              </a>
+            </Link>
+          </div>
+          <div className="col-7 text-center">
+            <h4 className="m-0">{props.title}</h4>
+          </div>
         </div>
       </div>
+      <div className="flex-grow-1 sheet-body px-3">{props.content}</div>
       <div className="sheet-footer py-3 border-top px-3 d-flex justify-content-end">
         {props.footer}
       </div>
@@ -99,6 +135,10 @@ const SheetView = props => (
       {`
         .sheet-view {
           height: 100%;
+        }
+
+        .back-button {
+          text-decoration: none;
         }
       `}
     </style>
