@@ -43,7 +43,7 @@ class ItemsPage extends Component {
     const columns = [
       {
         Header: "Product",
-        accessor: "product"
+        accessor: "name"
       },
       {
         Header: "Category",
@@ -81,7 +81,7 @@ class ItemsPage extends Component {
 
 const mapStateToProps = state => ({
   authUser: state.sessionState.authUser,
-  users: state.firestoreState.ordered.items
+  items: state.firestoreState.ordered.items
 });
 
 export default withFirestore(connect(mapStateToProps)(Page));

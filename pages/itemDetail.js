@@ -4,8 +4,9 @@ import { Form, Field, withFormik } from "formik";
 import * as Yup from "yup";
 
 import { PageWithAuthorization } from "../components/app";
+import SheetView from "../components/ui/sheetView";
 import Layout from "../components/layout";
-import { Link } from "../routes";
+import withFirestore from "../utils";
 
 class Page extends Component {
   render() {
@@ -54,15 +55,19 @@ class ItemDetailPage extends Component {
 }
 
 const EnhancedItemDetailPage = withFormik({
-  mapPropsToValues: ({ name }) => ({
+  mapPropsToValues: props => ({ name }) => ({
     name: name || ""
   }),
   validationSchema: Yup.object().shape({
     name: Yup.string().required("Nombre es requerido")
   }),
-  handleSubmit: (values, { setSubmitting }) => {
+  handleSubmit: (values, { props, setSubmitting }) => {
     setTimeout(() => {
       alert(JSON.stringify(values, null, 2));
+      props.firestore.add("items", {
+        ...values,
+        owner: props.authUser.uid
+      });
       setSubmitting(false);
     }, 1000);
   },
@@ -72,35 +77,59 @@ const EnhancedItemDetailPage = withFormik({
 class ItemForm extends Component {
   state = {};
   render() {
+    const {
+      values,
+      touched,
+      errors,
+      dirty,
+      isSubmitting,
+      handleChange,
+      handleBlur,
+      handleSubmit,
+      handleReset
+    } = this.props;
     return (
       <div className="row d-flex justify-content-center mt-4">
         <div className="col-sm-8">
-          <div className="form-section my-4 border-bottom">
-            <h4>Información Básica</h4>
+          <div className="form-row py-5 border-bottom">
+            <div className="col-sm-4">
+              <h4>Detalle</h4>
+            </div>
+            <div className="col-sm-8">
+              <div className="form-group">
+                <label className="form-label">Nombre del Producto</label>
+                <Field
+                  type="text"
+                  name="name"
+                  className={
+                    errors.name && touched.name
+                      ? "form-control is-invalid"
+                      : "form-control"
+                  }
+                  placeholder={"Nombre del Producto"}
+                />
+                {touched.name &&
+                  errors.name && (
+                    <div className="invalid-feedback">{errors.name}</div>
+                  )}
+              </div>
+              <div className="form-group">
+                <label className="form-label">Descripcion</label>
+                <Field
+                  component="textarea"
+                  name="description"
+                  className="form-control"
+                  placeholder="Capture una descripcion a este Item"
+                  rows="3"
+                />
+              </div>
+            </div>
           </div>
-          <div className="row">
-            <div className="col">
-              <label>Nombre del Producto</label>
-              <Field
-                type="text"
-                name="name"
-                className="form-control"
-                placeholder={"Nombre del Producto"}
-              />
+
+          <div className="form-row py-5 border-bottom">
+            <div className="col-sm-4">
+              <h4>Precio y Datos de Inventario</h4>
             </div>
-            <div className="col">
-              <label>SKU del Producto</label>
-              <Field
-                type="text"
-                name="sku"
-                className="form-control"
-                placeholder={"Nombre del Producto"}
-              />
-            </div>
-            {this.props.touched.sku &&
-              this.props.errors.sku && (
-                <small className="text-danger">{this.props.errors.sku}</small>
-              )}
           </div>
         </div>
       </div>
@@ -108,45 +137,9 @@ class ItemForm extends Component {
   }
 }
 
-const SheetView = props => (
-  <span>
-    <div className="row sheet-view d-flex flex-column">
-      <div className="bg-azure-dark text-light sheet-navbar pt-5 px-3">
-        <div className="row">
-          <div className="col-2 h5">
-            <Link route={props.routeBack}>
-              <a className="back-button">
-                <i className="fe fe-chevron-left mr-1" />
-                <span>Regresar</span>
-              </a>
-            </Link>
-          </div>
-          <div className="col-7 text-center">
-            <h4 className="m-0">{props.title}</h4>
-          </div>
-        </div>
-      </div>
-      <div className="flex-grow-1 sheet-body px-3">{props.content}</div>
-      <div className="sheet-footer py-3 border-top px-3 d-flex justify-content-end">
-        {props.footer}
-      </div>
-    </div>
-    <style jsx>
-      {`
-        .sheet-view {
-          height: 100%;
-        }
-
-        .back-button {
-          text-decoration: none;
-        }
-      `}
-    </style>
-  </span>
-);
-
 const mapStateToProps = state => ({
-  authUser: state.sessionState.authUser
+  authUser: state.sessionState.authUser,
+  items: state.firestoreState.ordered.items
 });
 
-export default connect(mapStateToProps)(Page);
+export default withFirestore(connect(mapStateToProps)(Page));
