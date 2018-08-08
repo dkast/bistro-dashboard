@@ -8,7 +8,7 @@ import Layout from "../components/layout";
 import ItemsNavigation from "../components/navigation/itemsNavigation";
 import withFirestore from "../utils";
 import SimpleTable from "../components/datatable/simpleTable";
-import { Link } from "../routes";
+import { Link, Router } from "../routes";
 
 const listenerSettings = {
   collection: "items"
@@ -38,6 +38,11 @@ class Page extends Component {
 }
 
 class ItemsPage extends Component {
+  handleRowClick = rowInfo => {
+    console.log(rowInfo);
+    Router.pushRoute("item-detail", { id: rowInfo.original.id });
+  };
+
   render() {
     const { items } = this.props;
     const columns = [
@@ -71,7 +76,11 @@ class ItemsPage extends Component {
                 </Link>
               </div>
             </div>
-            <SimpleTable data={items} columns={columns} />
+            <SimpleTable
+              data={items}
+              columns={columns}
+              onRowClick={this.handleRowClick}
+            />
           </div>
         </div>
       </Layout>

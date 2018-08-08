@@ -3,7 +3,7 @@ import { Link } from "../../routes";
 const SheetView = props => (
   <span>
     <div className="sheet-view d-flex flex-column">
-      <div className="sheet-navbar bg-azure-dark text-light pt-5 pb-2 px-3">
+      <div className="sheet-navbar bg-azure text-light pt-5 pb-2 px-3">
         <div className="row">
           <div className="col-2 h5">
             <Link route={props.routeBack}>

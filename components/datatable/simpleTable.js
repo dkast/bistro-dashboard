@@ -12,7 +12,27 @@ class SimpleTable extends Component {
           minRows={3}
           filterable={this.props.filterable}
           showPagination={false}
+          getTdProps={(state, rowInfo, column, instance) => {
+            return {
+              onClick: (e, handleOriginal) => {
+                this.props.onRowClick(rowInfo);
+                // IMPORTANT! React-Table uses onClick internally to trigger
+                // events like expanding SubComponents and pivots.
+                // By default a custom 'onClick' handler will override this functionality.
+                // If you want to fire the original onClick handler, call the
+                // 'handleOriginal' function.
+                if (handleOriginal) {
+                  handleOriginal();
+                }
+              }
+            };
+          }}
         />
+        <style jsx global>{`
+          .ReactTable .rt-tr {
+            cursor: pointer;
+          }
+        `}</style>
       </div>
     );
   }
