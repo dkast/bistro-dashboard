@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { PageWithAuthorization } from "../components/app";
 import SheetView from "../components/ui/sheetView";
 import Layout from "../components/layout";
-import withFirestore from "../utils";
+import { withFirestore, withPageProps } from "../utils";
 
 class Page extends Component {
   render() {
@@ -142,4 +142,4 @@ const mapStateToProps = state => ({
   items: state.firestoreState.ordered.items
 });
 
-export default withFirestore(connect(mapStateToProps)(Page));
+export default withPageProps(withFirestore(connect(mapStateToProps)(Page)));

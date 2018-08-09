@@ -25,4 +25,18 @@ const withFirestore = WrappedComponent => {
   return WithFirestore;
 };
 
-export default withFirestore;
+const withPageProps = WrappedComponent => {
+  class WithPageProps extends Component {
+    static async getInitialProps({ isServer, pathname, asPath, query }) {
+      return { isServer, pathname, asPath, query };
+    }
+
+    render() {
+      return <WrappedComponent {...this.props} />;
+    }
+  }
+
+  return WithPageProps;
+};
+
+export { withPageProps, withFirestore };

@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 
 import { PageWithAuthorization } from "../components/app";
 import Head from "../components/head";
 import Layout from "../components/layout";
 import ItemsNavigation from "../components/navigation/itemsNavigation";
-import withFirestore from "../utils";
+import { withFirestore, withPageProps } from "../utils";
 import SimpleTable from "../components/datatable/simpleTable";
 import { Link, Router } from "../routes";
 
@@ -93,4 +92,4 @@ const mapStateToProps = state => ({
   items: state.firestoreState.ordered.items
 });
 
-export default withFirestore(connect(mapStateToProps)(Page));
+export default withPageProps(withFirestore(connect(mapStateToProps)(Page)));

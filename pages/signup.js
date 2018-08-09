@@ -7,7 +7,7 @@ import { auth } from "../firebase";
 import { connect } from "react-redux";
 import { SignInLink } from "./signin";
 import CenterFrame from "./../components/layout/centerFrame";
-import withFirestore from "../utils";
+import { withFirestore } from "../utils";
 import Head from "../components/head";
 import { Link, Router } from "../routes";
 
