@@ -7,14 +7,31 @@ import { PageWithAuthorization } from "../components/app";
 import SheetView from "../components/ui/sheetView";
 import Layout from "../components/layout";
 import { withFirestore, withPageProps } from "../utils";
+import Loader from "../components/ui/loader";
 
 class Page extends Component {
+  loadData = () => {
+    const id = this.props.query.id;
+    this.props.firestore.get({ collection: "items", doc: id });
+  };
+
+  componentDidMount() {
+    this.loadData();
+  }
   render() {
-    const { authUser } = this.props;
+    const { authUser, items } = this.props;
+    let item = "";
+
+    if (!items) return <Loader />;
+
+    if (items.length) {
+      item = items[0];
+    }
+
     return (
       <>
         <PageWithAuthorization>
-          {authUser && <EnhancedItemDetailPage {...this.props} />}
+          {authUser && <EnhancedItemDetailPage {...this.props} item={item} />}
         </PageWithAuthorization>
       </>
     );
@@ -55,9 +72,10 @@ class ItemDetailPage extends Component {
 }
 
 const EnhancedItemDetailPage = withFormik({
-  mapPropsToValues: props => ({ name }) => ({
-    name: name || ""
-  }),
+  enableReinitialize: true,
+  mapPropsToValues: props => {
+    return props.item;
+  },
   validationSchema: Yup.object().shape({
     name: Yup.string().required("Nombre es requerido")
   }),
@@ -137,7 +155,7 @@ class ItemForm extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   authUser: state.sessionState.authUser,
   items: state.firestoreState.ordered.items
 });
