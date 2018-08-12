@@ -8,6 +8,10 @@ import SheetView from "../components/ui/sheetView";
 import Layout from "../components/layout";
 import { withFirestore, withPageProps } from "../utils";
 import Loader from "../components/ui/loader";
+import { db } from "../firebase/firebase";
+
+const ACT_ADD = "add";
+const ACT_UPDATE = "update";
 
 class Page extends Component {
   loadData = () => {
@@ -19,8 +23,15 @@ class Page extends Component {
     this.loadData();
   }
   render() {
-    const { authUser, items } = this.props;
+    const { authUser, items, query } = this.props;
     let item = "";
+    let action;
+
+    if (query.id === "new") {
+      action = ACT_ADD;
+    } else {
+      action = ACT_UPDATE;
+    }
 
     if (!items) return <Loader />;
 
@@ -31,7 +42,13 @@ class Page extends Component {
     return (
       <>
         <PageWithAuthorization>
-          {authUser && <EnhancedItemDetailPage {...this.props} item={item} />}
+          {authUser && (
+            <EnhancedItemDetailPage
+              {...this.props}
+              item={item}
+              dbAction={action}
+            />
+          )}
         </PageWithAuthorization>
       </>
     );
@@ -39,24 +56,63 @@ class Page extends Component {
 }
 
 class ItemDetailPage extends Component {
+  onDeleteItem = event => {
+    alert("Borrando");
+    event.preventDefault();
+    const id = this.props.query.id;
+    this.props.firestore.delete({ collection: "items", doc: id });
+  };
+  renderFooter = (action, isSubmitting) => {
+    switch (action) {
+      case ACT_ADD:
+        return (
+          <button
+            className="btn btn-azure"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            Guardar
+          </button>
+        );
+      case ACT_UPDATE:
+        return (
+          <>
+            <button
+              className="btn btn-outline-danger mr-2"
+              onClick={this.onDeleteItem}
+            >
+              Eliminar
+            </button>
+            <button
+              className="btn btn-azure"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              Guardar
+            </button>
+          </>
+        );
+    }
+  };
+
   render() {
-    const { values, errors, touched, handleChange, isSubmitting } = this.props;
+    const {
+      values,
+      errors,
+      touched,
+      handleChange,
+      isSubmitting,
+      dbAction
+    } = this.props;
+    const title = dbAction === ACT_ADD ? "Crear Nuevo Item" : "Actualiza Item";
     return (
       <Layout>
         <Form className="form-sheet">
           <SheetView
-            title={"Crear Nuevo Item"}
+            title={title}
             routeBack={"items"}
             content={<ItemForm {...this.props} />}
-            footer={
-              <button
-                className="btn btn-azure"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                Guardar
-              </button>
-            }
+            footer={this.renderFooter(dbAction, isSubmitting)}
           />
         </Form>
         <style jsx global>
@@ -80,14 +136,25 @@ const EnhancedItemDetailPage = withFormik({
     name: Yup.string().required("Nombre es requerido")
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      props.firestore.add("items", {
-        ...values,
-        owner: props.authUser.uid
-      });
-      setSubmitting(false);
-    }, 1000);
+    //alert(JSON.stringify(values, null, 2));
+    switch (props.dbAction) {
+      case ACT_ADD:
+        props.firestore.add("items", {
+          ...values,
+          owner: props.authUser.uid
+        });
+        break;
+      case ACT_UPDATE:
+        //Substract id from values to avoid duplicate property on firebase document
+        const { id, ...valuesNoId } = values;
+        const itemUpdates = {
+          ...valuesNoId,
+          updatedAt: props.firestore.FieldValue.serverTimestamp()
+        };
+        props.firestore.update({ collection: "items", doc: id }, itemUpdates);
+        break;
+    }
+    setSubmitting(false);
   },
   displayName: "ItemForm"
 })(ItemDetailPage);

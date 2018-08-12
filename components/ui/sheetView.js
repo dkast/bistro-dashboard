@@ -19,7 +19,7 @@ const SheetView = props => (
         </div>
       </div>
       <div className="sheet-body px-3 flex-grow-1">{props.content}</div>
-      <div className="sheet-footer py-3 border-top px-3 d-flex justify-content-end">
+      <div className="sheet-footer bg-white py-3 border-top px-3 d-flex justify-content-end">
         {props.footer}
       </div>
     </div>
