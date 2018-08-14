@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Form, Field, withFormik } from "formik";
 import * as Yup from "yup";
+import Modal from "react-bootstrap4-modal";
 
 import { PageWithAuthorization } from "../components/app";
 import SheetView from "../components/ui/sheetView";
 import Layout from "../components/layout";
 import { withFirestore, withPageProps } from "../utils";
 import Loader from "../components/ui/loader";
-import { db } from "../firebase/firebase";
 
 const ACT_ADD = "add";
 const ACT_UPDATE = "update";
@@ -56,12 +56,30 @@ class Page extends Component {
 }
 
 class ItemDetailPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false
+    };
+  }
+
+  onShowConfirmDelete = event => {
+    event.preventDefault();
+    this.setState({ open: true });
+  };
+
+  onDismissConfirmDelete = event => {
+    event.preventDefault();
+    this.setState({ open: false });
+  };
+
   onDeleteItem = event => {
-    alert("Borrando");
     event.preventDefault();
     const id = this.props.query.id;
     this.props.firestore.delete({ collection: "items", doc: id });
+    this.setState({ open: false });
   };
+
   renderFooter = (action, isSubmitting) => {
     switch (action) {
       case ACT_ADD:
@@ -79,7 +97,7 @@ class ItemDetailPage extends Component {
           <>
             <button
               className="btn btn-outline-danger mr-2"
-              onClick={this.onDeleteItem}
+              onClick={this.onShowConfirmDelete}
             >
               Eliminar
             </button>
@@ -107,6 +125,11 @@ class ItemDetailPage extends Component {
     const title = dbAction === ACT_ADD ? "Crear Nuevo Item" : "Actualiza Item";
     return (
       <Layout>
+        <ModalConfirmation
+          open={this.state.open}
+          onConfirm={this.onDeleteItem}
+          onDismiss={this.onDismissConfirmDelete}
+        />
         <Form className="form-sheet">
           <SheetView
             title={title}
@@ -218,6 +241,29 @@ class ItemForm extends Component {
           </div>
         </div>
       </div>
+    );
+  }
+}
+
+class ModalConfirmation extends Component {
+  render() {
+    return (
+      <Modal visible={this.props.open}>
+        <div className="modal-header">
+          <h5 className="modal-title">Eliminar Item</h5>
+        </div>
+        <div className="modal-body">
+          <p>Eliminar Item?</p>
+        </div>
+        <div className="modal-footer">
+          <button className="btn btn-default" onClick={this.props.onDismiss}>
+            Cancelar
+          </button>
+          <button className="btn btn-danger" onClick={this.props.onConfirm}>
+            Eliminar
+          </button>
+        </div>
+      </Modal>
     );
   }
 }
