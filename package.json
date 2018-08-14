@@ -20,6 +20,7 @@
     "react": "^16.4.1",
     "react-bootstrap4-modal": "^1.4.0",
     "react-dom": "^16.4.1",
+    "react-notifications-component": "0.0.6",
     "react-redux": "^5.0.7",
     "react-table": "^6.8.6",
     "react-transition-group": "^2.4.0",
