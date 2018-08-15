@@ -178,6 +178,7 @@ const EnhancedItemDetailPage = withFormik({
         break;
     }
     setSubmitting(false);
+    props.onSetShowNotification(true);
   },
   displayName: "ItemForm"
 })(ItemDetailPage);
@@ -273,4 +274,16 @@ const mapStateToProps = (state, ownProps) => ({
   items: state.firestoreState.ordered.items
 });
 
-export default withPageProps(withFirestore(connect(mapStateToProps)(Page)));
+const mapDispatchToProps = dispatch => ({
+  onSetShowNotification: showNotification =>
+    dispatch({ type: "SHOW_NOTIFICATION_SET", showNotification })
+});
+
+export default withPageProps(
+  withFirestore(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(Page)
+  )
+);
