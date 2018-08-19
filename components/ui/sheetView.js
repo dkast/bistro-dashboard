@@ -14,11 +14,13 @@ const SheetView = props => (
             </Link>
           </div>
           <div className="col-7 text-center">
-            <h4 className="m-0">{props.title}</h4>
+            <h4 className="m-0 animated fadeInDown faster">{props.title}</h4>
           </div>
         </div>
       </div>
-      <div className="sheet-body px-3 flex-grow-1">{props.content}</div>
+      <div className="sheet-body px-3 flex-grow-1 animated fadeIn faster">
+        {props.content}
+      </div>
       <div className="sheet-footer bg-white py-3 border-top px-3 d-flex justify-content-end">
         {props.footer}
       </div>

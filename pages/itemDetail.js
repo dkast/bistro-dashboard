@@ -9,6 +9,7 @@ import SheetView from "../components/ui/sheetView";
 import Layout from "../components/layout";
 import { withFirestore, withPageProps } from "../utils";
 import Loader from "../components/ui/loader";
+import { Router } from "../routes";
 
 const ACT_ADD = "add";
 const ACT_UPDATE = "update";
@@ -78,6 +79,15 @@ class ItemDetailPage extends Component {
     const id = this.props.query.id;
     this.props.firestore.delete({ collection: "items", doc: id });
     this.setState({ open: false });
+    this.props.onSetNotification({
+      title: "Item Eliminado",
+      message: "Item ha sido eliminado",
+      type: "success",
+      visible: true
+    });
+    setTimeout(() => {
+      Router.pushRoute("items");
+    }, 500);
   };
 
   renderFooter = (action, isSubmitting) => {
@@ -156,16 +166,21 @@ const EnhancedItemDetailPage = withFormik({
     return props.item;
   },
   validationSchema: Yup.object().shape({
-    name: Yup.string().required("Nombre es requerido")
+    name: Yup.string().required("Nombre es requerido"),
+    price: Yup.number("Valor debe ser númerico")
+      .required("Precio es requerido")
+      .positive("Precio debe ser mayor a cero")
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
     //alert(JSON.stringify(values, null, 2));
+    let notificationTitle = "";
     switch (props.dbAction) {
       case ACT_ADD:
         props.firestore.add("items", {
           ...values,
           owner: props.authUser.uid
         });
+        notificationTitle = "Item Creado";
         break;
       case ACT_UPDATE:
         //Substract id from values to avoid duplicate property on firebase document
@@ -175,10 +190,18 @@ const EnhancedItemDetailPage = withFormik({
           updatedAt: props.firestore.FieldValue.serverTimestamp()
         };
         props.firestore.update({ collection: "items", doc: id }, itemUpdates);
+        notificationTitle = "Item Modificado";
         break;
     }
     setSubmitting(false);
-    props.onSetShowNotification(true);
+    props.onSetNotification({
+      ...props.notification,
+      visible: true,
+      title: notificationTitle,
+      message: "Los cambios han sido guardados",
+      type: "success"
+    });
+    Router.pushRoute("items");
   },
   displayName: "ItemForm"
 })(ItemDetailPage);
@@ -215,7 +238,7 @@ class ItemForm extends Component {
                       ? "form-control is-invalid"
                       : "form-control"
                   }
-                  placeholder={"Nombre del Producto"}
+                  placeholder="Nombre del Producto"
                 />
                 {touched.name &&
                   errors.name && (
@@ -237,7 +260,26 @@ class ItemForm extends Component {
 
           <div className="form-row py-5 border-bottom">
             <div className="col-sm-4">
-              <h4>Precio y Datos de Inventario</h4>
+              <h4>Precio e Inventario</h4>
+            </div>
+            <div className="col-sm-8">
+              <div className="form-group">
+                <label className="form-label">Descripcion</label>
+                <Field
+                  type="text"
+                  name="price"
+                  className={
+                    errors.price && touched.price
+                      ? "form-control is-invalid"
+                      : "form-control"
+                  }
+                  placeholder="0.00"
+                />
+                {touched.price &&
+                  errors.price && (
+                    <div className="invalid-feedback">{errors.price}</div>
+                  )}
+              </div>
             </div>
           </div>
         </div>
@@ -252,12 +294,18 @@ class ModalConfirmation extends Component {
       <Modal visible={this.props.open}>
         <div className="modal-header">
           <h5 className="modal-title">Eliminar Item</h5>
+          <button
+            className="close"
+            type="button"
+            aria-label="Close"
+            onClick={this.props.onDismiss}
+          />
         </div>
         <div className="modal-body">
-          <p>Eliminar Item?</p>
+          <p>¿Desea eliminar este Item? Esta operación no puede deshacerse.</p>
         </div>
         <div className="modal-footer">
-          <button className="btn btn-default" onClick={this.props.onDismiss}>
+          <button className="btn btn-secondary" onClick={this.props.onDismiss}>
             Cancelar
           </button>
           <button className="btn btn-danger" onClick={this.props.onConfirm}>
@@ -271,12 +319,13 @@ class ModalConfirmation extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
   authUser: state.sessionState.authUser,
-  items: state.firestoreState.ordered.items
+  items: state.firestoreState.ordered.items,
+  notification: state.uiState.notification
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSetShowNotification: showNotification =>
-    dispatch({ type: "SHOW_NOTIFICATION_SET", showNotification })
+  onSetNotification: notification =>
+    dispatch({ type: "NOTIFICATION_SET", notification })
 });
 
 export default withPageProps(

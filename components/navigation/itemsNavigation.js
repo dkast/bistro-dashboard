@@ -6,7 +6,7 @@ const ItemsNavigation = props => (
       <NavLink route="items">Items</NavLink>
     </li>
     <li className="nav-item">
-      <NavLink route="modifiers">Modifiers</NavLink>
+      <NavLink route="categories">Categorias</NavLink>
     </li>
   </ul>
 );

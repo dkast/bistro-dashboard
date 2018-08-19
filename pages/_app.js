@@ -6,6 +6,7 @@ import "react-table/react-table.css";
 import withNProgress from "next-nprogress";
 
 import initStore from "../store";
+import Notification from "../components/ui/notifcation";
 
 const MS_DELAY = 200;
 const CONFIG_OPTIONS = { trickleSpeed: 50 };
@@ -38,7 +39,9 @@ export default withNProgress(MS_DELAY, CONFIG_OPTIONS)(withRedux(initStore))(
         <>
           <Container>
             <Provider store={store}>
-              <Component {...pageProps} />
+              <Notification>
+                <Component {...pageProps} />
+              </Notification>
             </Provider>
           </Container>
           <style jsx global>{`

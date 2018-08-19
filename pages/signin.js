@@ -12,10 +12,10 @@ const SignInPage = () => (
   <PageWithAuthentication>
     <CenterFrame>
       <div className="col-md-8">
-        <div className="card-group shadow-lg">
+        <div className="card-group shadow-lg animated fadeIn">
           <div className="card">
             <div className="card-body p-6">
-              <h5 className="card-title">Welcome</h5>
+              <h5 className="card-title">Bienvenido</h5>
               <SignInForm />
               <SignUpLink />
             </div>
@@ -63,7 +63,7 @@ class SignInForm extends Component {
     const isInvalid = password === "" || email === "";
 
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit} className={error ? "animated shake" : ""}>
         <div className="form-group">
           <div className="input-icon mb-3">
             <span className="input-icon-addon">
@@ -78,7 +78,7 @@ class SignInForm extends Component {
                   email: event.target.value
                 })
               }
-              placeholder="Email"
+              placeholder="E-mail"
             />
           </div>
           <div className="input-icon mb-3">
@@ -94,7 +94,7 @@ class SignInForm extends Component {
                   password: event.target.value
                 })
               }
-              placeholder="Password"
+              placeholder="Contraseña"
             />
           </div>
         </div>
@@ -104,7 +104,7 @@ class SignInForm extends Component {
           disabled={isInvalid}
           type="submit"
         >
-          Sign In
+          Continuar
         </button>
 
         {error && (
@@ -117,9 +117,9 @@ class SignInForm extends Component {
 
 const SignInLink = () => (
   <span>
-    Already have an account?{" "}
+    ¿Ya tienes una cuenta?{" "}
     <Link route="signin">
-      <a>Sign In</a>
+      <a>Ingresa</a>
     </Link>
   </span>
 );

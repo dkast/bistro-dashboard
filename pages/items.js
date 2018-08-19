@@ -46,15 +46,15 @@ class ItemsPage extends Component {
     const { items } = this.props;
     const columns = [
       {
-        Header: "Product",
+        Header: "Producto",
         accessor: "name"
       },
       {
-        Header: "Category",
+        Header: "Categoria",
         accessor: "category"
       },
       {
-        Header: "Price",
+        Header: "Precio",
         accessor: "price"
       }
     ];
@@ -71,7 +71,7 @@ class ItemsPage extends Component {
                 <input type="text" className="form-control" />
                 {/* <button className="btn btn-azure">Add Item</button> */}
                 <Link route="item-detail" params={{ id: "new" }}>
-                  <a className="btn btn-azure">Create Item</a>
+                  <a className="btn btn-azure">Crear Item</a>
                 </Link>
               </div>
             </div>

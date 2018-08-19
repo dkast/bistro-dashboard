@@ -1,7 +1,12 @@
 const INITIAL_STATE = {
   sideBarExpanded: false,
   routeSelected: "/",
-  showNotification: false
+  notification: {
+    visible: false,
+    title: "",
+    message: "",
+    type: "success"
+  }
 };
 
 const applySetSideBarExpanded = (state, action) => ({
@@ -14,9 +19,9 @@ const applySetRouteSelected = (state, action) => ({
   routeSelected: action.routeSelected
 });
 
-const applySetShowNotification = (state, action) => ({
+const applySetNotification = (state, action) => ({
   ...state,
-  showNotification: action.showNotification
+  notification: action.notification
 });
 
 function uiReducer(state = INITIAL_STATE, action) {
@@ -27,8 +32,8 @@ function uiReducer(state = INITIAL_STATE, action) {
     case "SIDEBAR_SELECTED_SET":
       return applySetRouteSelected(state, action);
       break;
-    case "SHOW_NOTIFICATION_SET":
-      return applySetShowNotification(state, action);
+    case "NOTIFICATION_SET":
+      return applySetNotification(state, action);
       break;
     default:
       return state;
