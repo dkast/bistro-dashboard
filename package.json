@@ -26,6 +26,7 @@
     "react-redux": "^5.0.7",
     "react-table": "^6.8.6",
     "react-transition-group": "^2.4.0",
+    "recompose": "^0.28.2",
     "redux": "^4.0.0",
     "redux-firestore": "^0.5.7",
     "yup": "^0.26.0"
