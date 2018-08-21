@@ -3,15 +3,9 @@ import { connect } from "react-redux";
 import { Form, Field, withFormik } from "formik";
 import * as Yup from "yup";
 import Modal from "react-bootstrap4-modal";
-import MaskedInput from "react-text-mask";
-import createNumberMask from "text-mask-addons/dist/createNumberMask";
+import NumberFormat from "react-number-format";
 
 import { parseNumber } from "../utils";
-
-const numberMask = createNumberMask({
-  prefix: "",
-  allowDecimal: true
-});
 
 import { PageWithAuthorization } from "../components/app";
 import SheetView from "../components/ui/sheetView";
@@ -277,9 +271,11 @@ class ItemForm extends Component {
                 <Field
                   name="price"
                   render={({ field }) => (
-                    <MaskedInput
-                      mask={numberMask}
+                    <NumberFormat
                       {...field}
+                      thousandSeparator={true}
+                      decimalScale={2}
+                      fixedDecimalScale={true}
                       className={
                         errors.price && touched.price
                           ? "form-control is-invalid"

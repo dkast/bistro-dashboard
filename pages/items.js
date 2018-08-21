@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import NumberFormat from "react-number-format";
 
 import { PageWithAuthorization } from "../components/app";
 import Head from "../components/head";
@@ -55,7 +56,17 @@ class ItemsPage extends Component {
       },
       {
         Header: "Precio",
-        accessor: "price"
+        accessor: "price",
+        Cell: row => (
+          <NumberFormat
+            value={row.value}
+            prefix={"$"}
+            thousandSeparator={true}
+            decimalScale={2}
+            fixedDecimalScale={true}
+            displayType={"text"}
+          />
+        )
       }
     ];
     let isLoading = false;
