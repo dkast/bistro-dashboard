@@ -3,6 +3,15 @@ import { connect } from "react-redux";
 import { Form, Field, withFormik } from "formik";
 import * as Yup from "yup";
 import Modal from "react-bootstrap4-modal";
+import MaskedInput from "react-text-mask";
+import createNumberMask from "text-mask-addons/dist/createNumberMask";
+
+import { parseNumber } from "../utils";
+
+const numberMask = createNumberMask({
+  prefix: "",
+  allowDecimal: true
+});
 
 import { PageWithAuthorization } from "../components/app";
 import SheetView from "../components/ui/sheetView";
@@ -167,9 +176,7 @@ const EnhancedItemDetailPage = withFormik({
   },
   validationSchema: Yup.object().shape({
     name: Yup.string().required("Nombre es requerido"),
-    price: Yup.number("Valor debe ser númerico")
-      .required("Precio es requerido")
-      .positive("Precio debe ser mayor a cero")
+    price: Yup.number().required("Precio es requerido")
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
     //alert(JSON.stringify(values, null, 2));
@@ -184,9 +191,11 @@ const EnhancedItemDetailPage = withFormik({
         break;
       case ACT_UPDATE:
         //Substract id from values to avoid duplicate property on firebase document
-        const { id, ...valuesNoId } = values;
+        let { id, price, ...valuesNoId } = values;
+        price = parseNumber(price);
         const itemUpdates = {
           ...valuesNoId,
+          price: price,
           updatedAt: props.firestore.FieldValue.serverTimestamp()
         };
         props.firestore.update({ collection: "items", doc: id }, itemUpdates);
@@ -266,14 +275,19 @@ class ItemForm extends Component {
               <div className="form-group">
                 <label className="form-label">Descripcion</label>
                 <Field
-                  type="text"
                   name="price"
-                  className={
-                    errors.price && touched.price
-                      ? "form-control is-invalid"
-                      : "form-control"
-                  }
-                  placeholder="0.00"
+                  render={({ field }) => (
+                    <MaskedInput
+                      mask={numberMask}
+                      {...field}
+                      className={
+                        errors.price && touched.price
+                          ? "form-control is-invalid"
+                          : "form-control"
+                      }
+                      placeholder="0.00"
+                    />
+                  )}
                 />
                 {touched.price &&
                   errors.price && (
