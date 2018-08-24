@@ -8,8 +8,8 @@ const SheetView = props => (
           <div className="col-2 h5">
             <Link route={props.routeBack}>
               <a className="back-button">
-                <i className="fe fe-chevron-left mr-1" />
-                <span>Regresar</span>
+                <i className="fe fe-x ml-2 h3" />
+                {/* <span>Regresar</span> */}
               </a>
             </Link>
           </div>

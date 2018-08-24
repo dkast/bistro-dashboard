@@ -230,8 +230,8 @@ class ItemForm extends Component {
             <div className="col-sm-4">
               <h4>Detalle</h4>
             </div>
-            <div className="col-sm-8">
-              <div className="form-group">
+            <div className="form-row col-sm-8">
+              <div className="form-group col-md-12">
                 <label className="form-label">Nombre del Producto</label>
                 <Field
                   type="text"
@@ -248,7 +248,7 @@ class ItemForm extends Component {
                     <div className="invalid-feedback">{errors.name}</div>
                   )}
               </div>
-              <div className="form-group">
+              <div className="form-group col-md-12">
                 <label className="form-label">Descripcion</label>
                 <Field
                   component="textarea"
@@ -258,16 +258,8 @@ class ItemForm extends Component {
                   rows="3"
                 />
               </div>
-            </div>
-          </div>
-
-          <div className="form-row py-5 border-bottom">
-            <div className="col-sm-4">
-              <h4>Precio e Inventario</h4>
-            </div>
-            <div className="col-sm-8">
-              <div className="form-group">
-                <label className="form-label">Descripcion</label>
+              <div className="form-group col-md-6">
+                <label className="form-label">Precio</label>
                 <Field
                   name="price"
                   render={({ field }) => (
@@ -291,6 +283,13 @@ class ItemForm extends Component {
                   )}
               </div>
             </div>
+          </div>
+
+          <div className="form-row py-5 border-bottom">
+            <div className="col-sm-4">
+              <h4>Precio e Inventario</h4>
+            </div>
+            <div className="form-row col-sm-8" />
           </div>
         </div>
       </div>
