@@ -226,61 +226,76 @@ class ItemForm extends Component {
     return (
       <div className="row d-flex justify-content-center mt-4">
         <div className="col-sm-8">
+          <h4 className="py-4">Detalle</h4>
           <div className="form-row py-5 border-bottom">
-            <div className="col-sm-4">
-              <h4>Detalle</h4>
+            <div className="col-sm-7">
+              <div className="form-row">
+                <div className="form-group col-md-12">
+                  <label className="form-label">Nombre del Producto</label>
+                  <Field
+                    type="text"
+                    name="name"
+                    className={
+                      errors.name && touched.name
+                        ? "form-control is-invalid"
+                        : "form-control"
+                    }
+                    placeholder="Nombre del Producto"
+                  />
+                  {touched.name &&
+                    errors.name && (
+                      <div className="invalid-feedback">{errors.name}</div>
+                    )}
+                </div>
+                <div className="form-group col-md-12">
+                  <label className="form-label">Descripcion</label>
+                  <Field
+                    component="textarea"
+                    name="description"
+                    className="form-control"
+                    placeholder="Capture una descripcion a este Item"
+                    rows="3"
+                  />
+                </div>
+                <div className="form-group col-md-6">
+                  <label className="form-label">Precio</label>
+                  <Field
+                    name="price"
+                    render={({ field }) => (
+                      <NumberFormat
+                        {...field}
+                        thousandSeparator={true}
+                        decimalScale={2}
+                        fixedDecimalScale={true}
+                        className={
+                          errors.price && touched.price
+                            ? "form-control is-invalid"
+                            : "form-control"
+                        }
+                        placeholder="0.00"
+                      />
+                    )}
+                  />
+                  {touched.price &&
+                    errors.price && (
+                      <div className="invalid-feedback">{errors.price}</div>
+                    )}
+                </div>
+              </div>
             </div>
-            <div className="form-row col-sm-8">
-              <div className="form-group col-md-12">
-                <label className="form-label">Nombre del Producto</label>
-                <Field
-                  type="text"
-                  name="name"
-                  className={
-                    errors.name && touched.name
-                      ? "form-control is-invalid"
-                      : "form-control"
-                  }
-                  placeholder="Nombre del Producto"
-                />
-                {touched.name &&
-                  errors.name && (
-                    <div className="invalid-feedback">{errors.name}</div>
-                  )}
-              </div>
-              <div className="form-group col-md-12">
-                <label className="form-label">Descripcion</label>
-                <Field
-                  component="textarea"
-                  name="description"
-                  className="form-control"
-                  placeholder="Capture una descripcion a este Item"
-                  rows="3"
-                />
-              </div>
-              <div className="form-group col-md-6">
-                <label className="form-label">Precio</label>
-                <Field
-                  name="price"
-                  render={({ field }) => (
-                    <NumberFormat
-                      {...field}
-                      thousandSeparator={true}
-                      decimalScale={2}
-                      fixedDecimalScale={true}
-                      className={
-                        errors.price && touched.price
-                          ? "form-control is-invalid"
-                          : "form-control"
-                      }
-                      placeholder="0.00"
-                    />
-                  )}
-                />
-                {touched.price &&
-                  errors.price && (
-                    <div className="invalid-feedback">{errors.price}</div>
-                  )}
+            <div className="col-sm-5">
+              <div className="form-group">
+                <label className="form-label">Cargar Imagen</label>
+                <div className="card img-upload">
+                  <div className="card-img-top">
+                    <div className="img-placeholder">
+                      <i className="fe fe-image" />
+                    </div>
+                  </div>
+                  <div className="card-body">
+                    <button className="btn btn-default">Cargar</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -292,6 +307,23 @@ class ItemForm extends Component {
             <div className="form-row col-sm-8" />
           </div>
         </div>
+        <style jsx>{`
+          .img-upload {
+            width: 200px;
+          }
+          .img-placeholder {
+            background-color: #f5f5f5;
+            height: 150px;
+            text-align: center;
+            vertical-align: center;
+          }
+
+          .img-placeholder i {
+            font-size: 6rem;
+            color: #e0e0e0;
+            margin: auto;
+          }
+        `}</style>
       </div>
     );
   }

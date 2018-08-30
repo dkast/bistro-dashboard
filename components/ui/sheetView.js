@@ -14,7 +14,7 @@ const SheetView = props => (
             </Link>
           </div>
           <div className="col-7 text-center">
-            <h4 className="m-0 animated fadeInDown faster">{props.title}</h4>
+            <h3 className="m-0 animated fadeInDown faster">{props.title}</h3>
           </div>
         </div>
       </div>
