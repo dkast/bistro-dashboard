@@ -13,6 +13,7 @@ import Layout from "../components/layout";
 import { withFirestore, withPageProps } from "../utils";
 import Loader from "../components/ui/loader";
 import { Router } from "../routes";
+import UploadImage from "../components/ui/uploadImage";
 
 const ACT_ADD = "add";
 const ACT_UPDATE = "update";
@@ -286,20 +287,10 @@ class ItemForm extends Component {
             <div className="col-sm-5">
               <div className="form-group">
                 <label className="form-label">Cargar Imagen</label>
-                <div className="card img-upload">
-                  <div className="card-img-top">
-                    <div className="img-placeholder">
-                      <i className="fe fe-image" />
-                    </div>
-                  </div>
-                  <div className="card-body">
-                    <button className="btn btn-default">Cargar</button>
-                  </div>
-                </div>
+                <UploadImage />
               </div>
             </div>
           </div>
-
           <div className="form-row py-5 border-bottom">
             <div className="col-sm-4">
               <h4>Precio e Inventario</h4>
@@ -307,23 +298,6 @@ class ItemForm extends Component {
             <div className="form-row col-sm-8" />
           </div>
         </div>
-        <style jsx>{`
-          .img-upload {
-            width: 200px;
-          }
-          .img-placeholder {
-            background-color: #f5f5f5;
-            height: 150px;
-            text-align: center;
-            vertical-align: center;
-          }
-
-          .img-placeholder i {
-            font-size: 6rem;
-            color: #e0e0e0;
-            margin: auto;
-          }
-        `}</style>
       </div>
     );
   }
