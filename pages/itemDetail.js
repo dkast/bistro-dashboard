@@ -152,13 +152,11 @@ class ItemDetailPage extends Component {
             footer={this.renderFooter(dbAction, isSubmitting)}
           />
         </Form>
-        <style jsx global>
-          {`
-            .form-sheet {
-              height: 100%;
-            }
-          `}
-        </style>
+        <style jsx global>{`
+          .form-sheet {
+            height: 100%;
+          }
+        `}</style>
       </Layout>
     );
   }
@@ -228,7 +226,7 @@ class ItemForm extends Component {
       <div className="row d-flex justify-content-center mt-4">
         <div className="col-sm-8">
           <h4 className="py-4">Detalle</h4>
-          <div className="form-row py-5 border-bottom">
+          <div className="form-row border-bottom">
             <div className="col-sm-7">
               <div className="form-row">
                 <div className="form-group col-md-12">
@@ -284,9 +282,9 @@ class ItemForm extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-sm-5">
+            <div className="col-sm-5 d-flex justify-content-end">
               <div className="form-group">
-                <label className="form-label">Cargar Imagen</label>
+                <label className="form-label">Añadir Imagen</label>
                 <UploadImage />
               </div>
             </div>

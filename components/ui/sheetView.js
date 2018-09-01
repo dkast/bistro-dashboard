@@ -25,23 +25,21 @@ const SheetView = props => (
         {props.footer}
       </div>
     </div>
-    <style jsx>
-      {`
-        .sheet-view {
-          height: 100%;
-          margin-right: -0.75rem;
-          margin-left: -0.75rem;
-        }
+    <style jsx>{`
+      .sheet-view {
+        height: 100%;
+        margin-right: -0.75rem;
+        margin-left: -0.75rem;
+      }
 
-        .sheet-body {
-          overflow: auto;
-        }
+      .sheet-body {
+        overflow: auto;
+      }
 
-        .back-button {
-          text-decoration: none;
-        }
-      `}
-    </style>
+      .back-button {
+        text-decoration: none;
+      }
+    `}</style>
   </span>
 );
 

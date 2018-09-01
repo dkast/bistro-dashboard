@@ -7,23 +7,23 @@ class UploadImage extends Component {
   }
   render() {
     return (
-      <div className=" bg-gray-lightest rounded img-upload shadow border">
-        <div className="img-placeholder d-flex align-content-center justify-content-center text-gray">
+      <div className="rounded img-upload shadow border p-1">
+        <div className="img-placeholder d-flex align-items-center justify-content-center">
           <i className="fe fe-image" />
         </div>
-        <button className="btn btn-default btn-block">Cargar</button>
+        <span className="btn btn-success btn-block">Añadir</span>
         <style jsx>{`
           .img-upload {
             width: 200px;
           }
           .img-placeholder {
-            // background-color: #f5f5f5;
-            height: 150px;
+            background-color: #f5f5f5;
+            height: 120px;
           }
 
           .img-placeholder i {
             font-size: 6rem;
-            // color: #e0e0e0;
+            color: #e0e0e0;
           }
         `}</style>
       </div>
