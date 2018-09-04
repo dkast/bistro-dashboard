@@ -9,6 +9,7 @@ import ItemsNavigation from "../components/navigation/itemsNavigation";
 import { withFirestore, withPageProps } from "../utils";
 import SimpleTable from "../components/datatable/simpleTable";
 import { Link, Router } from "../routes";
+import PageHeader from "../components/layout/pageHeader";
 
 const listenerSettings = {
   collection: "items"
@@ -73,24 +74,34 @@ class ItemsPage extends Component {
 
     return (
       <Layout>
-        <div className="row">
-          <div className="col m-5">
-            <h3>Items</h3>
-            <ItemsNavigation />
-            <div className="toolbar mt-5 mb-2">
-              <div className="form-inline d-flex justify-content-between">
-                <input type="text" className="form-control" />
-                {/* <button className="btn btn-azure">Add Item</button> */}
-                <Link route="item-detail" params={{ id: "new" }}>
-                  <a className="btn btn-azure">Crear Item</a>
-                </Link>
+        <div className="page">
+          <div className="page-main">
+            <PageHeader title="Items" />
+            <div className="container-fluid mt-5">
+              <div className="row">
+                <div className="col">
+                  <div className="card">
+                    <div className="card-body">
+                      <ItemsNavigation />
+                      <div className="toolbar mt-5 mb-2">
+                        <div className="form-inline d-flex justify-content-between">
+                          <input type="text" className="form-control" />
+                          {/* <button className="btn btn-azure">Add Item</button> */}
+                          <Link route="item-detail" params={{ id: "new" }}>
+                            <a className="btn btn-azure">Crear Item</a>
+                          </Link>
+                        </div>
+                      </div>
+                      <SimpleTable
+                        data={items}
+                        columns={columns}
+                        onRowClick={this.handleRowClick}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <SimpleTable
-              data={items}
-              columns={columns}
-              onRowClick={this.handleRowClick}
-            />
           </div>
         </div>
       </Layout>

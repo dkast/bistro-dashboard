@@ -9,33 +9,29 @@ class Layout extends Component {
     const { sideBarExpanded, routeSelected } = this.props;
 
     return (
-      <div className="wrapper">
+      <div className="page">
         <NProgressStyles color="#29d" spinner={false} />
         <SideBar selected={routeSelected} expanded={sideBarExpanded} />
-        <div className="main">
-          <div className="container-fluid">{this.props.children}</div>
-        </div>
-        <style jsx>
-          {`
-            .main {
-              position: relative;
-              overflow: hidden;
-              transition: all 0.15s;
-              margin-left: ${sideBarExpanded ? "240" : "64"}px;
-              height: 100%;
-            }
+        <div className="page-main main">{this.props.children}</div>
+        <style jsx>{`
+          .main {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.15s;
+            margin-left: ${sideBarExpanded ? "240" : "64"}px;
+            height: 100%;
+          }
 
-            .wrapper {
-              position: relative;
-              min-height: 100%;
-              height: 100%;
-            }
+          .wrapper {
+            position: relative;
+            min-height: 100%;
+            height: 100%;
+          }
 
-            .container-fluid {
-              height: 100%;
-            }
-          `}
-        </style>
+          .container-fluid {
+            height: 100%;
+          }
+        `}</style>
       </div>
     );
   }
