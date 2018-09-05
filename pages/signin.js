@@ -5,7 +5,6 @@ import { PageWithAuthentication } from "../components/app";
 import { auth } from "../firebase";
 import { SignUpLink } from "./signup";
 import CenterFrame from "./../components/layout/centerFrame";
-import Head from "../components/head";
 import { Link, Router } from "../routes";
 
 const SignInPage = () => (

@@ -1,11 +1,11 @@
 import { Link } from "../../routes";
 
 const SheetView = props => (
-  <span>
-    <div className="sheet-view d-flex flex-column">
-      <div className="sheet-navbar bg-azure text-light pt-5 pb-2 px-3">
+  <div className="page">
+    <div className="header bg-azure text-light animated fadeInDown faster">
+      <div className="container-fluid">
         <div className="row">
-          <div className="col-2 h5">
+          <div className="col-2 h5 my-1">
             <Link route={props.routeBack}>
               <a className="back-button">
                 <i className="fe fe-x ml-2 h3" />
@@ -14,16 +14,16 @@ const SheetView = props => (
             </Link>
           </div>
           <div className="col-7 text-center">
-            <h3 className="m-0 animated fadeInDown faster">{props.title}</h3>
+            <h3 className="my-1">{props.title}</h3>
           </div>
         </div>
       </div>
-      <div className="sheet-body px-3 flex-grow-1 animated fadeIn faster">
-        {props.content}
-      </div>
-      <div className="sheet-footer bg-white py-3 border-top px-3 d-flex justify-content-end">
-        {props.footer}
-      </div>
+    </div>
+    <div className="sheet-body px-3 flex-grow-1 animated fadeIn faster">
+      {props.content}
+    </div>
+    <div className="sheet-footer bg-white py-3 border-top px-3 d-flex justify-content-end">
+      {props.footer}
     </div>
     <style jsx>{`
       .sheet-view {
@@ -40,7 +40,7 @@ const SheetView = props => (
         text-decoration: none;
       }
     `}</style>
-  </span>
+  </div>
 );
 
 export default SheetView;

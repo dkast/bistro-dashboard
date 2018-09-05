@@ -8,7 +8,7 @@ import NumberFormat from "react-number-format";
 import { parseNumber } from "../utils";
 
 import { PageWithAuthorization } from "../components/app";
-import SheetView from "../components/ui/sheetView";
+import SheetView from "../components/layout/sheetView";
 import Layout from "../components/layout";
 import { withFirestore, withPageProps } from "../utils";
 import Loader from "../components/ui/loader";

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { compose } from "redux";
 
 import { PageWithAuthentication } from "../components/app";
@@ -8,7 +7,6 @@ import { connect } from "react-redux";
 import { SignInLink } from "./signin";
 import CenterFrame from "./../components/layout/centerFrame";
 import { withFirestore } from "../utils";
-import Head from "../components/head";
 import { Link, Router } from "../routes";
 
 const SignUpPage = props => (

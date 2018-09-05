@@ -9,7 +9,7 @@ class Layout extends Component {
     const { sideBarExpanded, routeSelected } = this.props;
 
     return (
-      <div className="page">
+      <div className="wrapper">
         <NProgressStyles color="#29d" spinner={false} />
         <SideBar selected={routeSelected} expanded={sideBarExpanded} />
         <div className="page-main main">{this.props.children}</div>

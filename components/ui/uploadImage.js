@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import FileUploader from "react-firebase-file-uploader";
+import { firebase } from "../../firebase";
 
 class UploadImage extends Component {
   constructor(props) {
@@ -11,7 +13,14 @@ class UploadImage extends Component {
         <div className="img-placeholder d-flex align-items-center justify-content-center">
           <i className="fe fe-image" />
         </div>
-        <span className="btn btn-success btn-block">Añadir</span>
+        <label className="btn btn-success btn-block m-0">
+          Añadir
+          <FileUploader
+            hidden
+            accept="image/*"
+            storageRef={firebase.storage.ref("images")}
+          />
+        </label>
         <style jsx>{`
           .img-upload {
             width: 200px;
