@@ -224,10 +224,10 @@ class ItemForm extends Component {
     } = this.props;
     return (
       <div className="row d-flex justify-content-center mt-4">
-        <div className="col-sm-8">
+        <div className="col-lg-10 col-xl-8">
           <h4 className="py-4">Detalle</h4>
           <div className="form-row border-bottom">
-            <div className="col-sm-7">
+            <div className="col-md-12 col-lg-7">
               <div className="form-row">
                 <div className="form-group col-md-12">
                   <label className="form-label">Nombre del Producto</label>
@@ -282,7 +282,7 @@ class ItemForm extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-sm-5 d-flex justify-content-end">
+            <div className="col-md-12 col-lg-5 d-flex justify-content-lg-end">
               <div className="form-group">
                 <label className="form-label">Añadir Imagen</label>
                 <UploadImage />

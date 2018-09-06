@@ -1,38 +1,92 @@
 import React, { Component } from "react";
 import FileUploader from "react-firebase-file-uploader";
+import CircularProgressBar from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+
 import { firebase } from "../../firebase";
 
 class UploadImage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isUploading: false,
+      progress: 0,
+      imageURL: ""
+    };
   }
+
+  handleUploadStart = () =>
+    this.setState({
+      isUploading: true,
+      progress: 0
+    });
+
+  handleProgress = progress =>
+    this.setState({
+      progress
+    });
+
+  handleUploadError = error => {
+    this.setState({ isUploading: false });
+    console.error(error);
+  };
+
+  handleUploadSuccess = filename => {
+    this.setState({ progress: 100, isUploading: false });
+    firebase.storage
+      .ref("images")
+      .child(filename)
+      .getDownloadURL()
+      .then(url => this.setState({ imageURL: url }));
+  };
+
   render() {
     return (
-      <div className="rounded img-upload shadow border p-1">
-        <div className="img-placeholder d-flex align-items-center justify-content-center">
-          <i className="fe fe-image" />
+      <div>
+        <div className="rounded shadow border img-placeholder d-flex align-items-center justify-content-center">
+          {!this.state.isUploading &&
+            !this.state.imageURL && <i className="fe fe-image" />}
+          {!this.state.isUploading &&
+            this.state.imageURL && (
+              <img src={this.state.imageURL} className="rounded img-fluid" />
+            )}
+          {this.state.isUploading && (
+            <CircularProgressBar
+              percentage={this.state.progress}
+              className="circular-progress"
+              strokeWidth={4}
+            />
+          )}
         </div>
-        <label className="btn btn-success btn-block m-0">
+        <label className="btn btn-success btn-block mb-0 mt-1">
           Añadir
           <FileUploader
             hidden
             accept="image/*"
+            randomizeFilename
+            maxWidth={640}
+            maxHeight={400}
             storageRef={firebase.storage.ref("images")}
+            onUploadStart={this.handleUploadStart}
+            onUploadError={this.handleUploadError}
+            onUploadSuccess={this.handleUploadSuccess}
+            onProgress={this.handleProgress}
           />
         </label>
         <style jsx>{`
-          .img-upload {
-            width: 200px;
-          }
           .img-placeholder {
             background-color: #f5f5f5;
-            height: 120px;
+            width: 320px;
+            height: 200px;
           }
 
           .img-placeholder i {
             font-size: 6rem;
             color: #e0e0e0;
+          }
+
+          div :global(.circular-progress) {
+            height: 60% !important;
           }
         `}</style>
       </div>

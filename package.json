@@ -20,6 +20,7 @@
     "next-routes": "^1.4.2",
     "react": "^16.4.1",
     "react-bootstrap4-modal": "^1.4.0",
+    "react-circular-progressbar": "^1.0.0",
     "react-dom": "^16.4.1",
     "react-firebase-file-uploader": "^2.4.2",
     "react-notifications-component": "0.0.6",
