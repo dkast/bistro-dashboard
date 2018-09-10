@@ -210,6 +210,13 @@ const EnhancedItemDetailPage = withFormik({
 
 class ItemForm extends Component {
   state = {};
+
+  handleImageURL = imageURL => {
+    const { values, setValues } = this.props;
+    console.log(imageURL);
+    setValues({ ...values, imageURL });
+  };
+
   render() {
     const {
       values,
@@ -285,7 +292,10 @@ class ItemForm extends Component {
             <div className="col-md-12 col-lg-5 d-flex justify-content-lg-end">
               <div className="form-group">
                 <label className="form-label">Añadir Imagen</label>
-                <UploadImage />
+                <UploadImage
+                  onChangeImageURL={this.handleImageURL}
+                  imageURL={values.imageURL}
+                />
               </div>
             </div>
           </div>

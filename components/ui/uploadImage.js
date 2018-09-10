@@ -10,8 +10,7 @@ class UploadImage extends Component {
     super(props);
     this.state = {
       isUploading: false,
-      progress: 0,
-      imageURL: ""
+      progress: 0
     };
   }
 
@@ -37,7 +36,7 @@ class UploadImage extends Component {
       .ref("images")
       .child(filename)
       .getDownloadURL()
-      .then(url => this.setState({ imageURL: url }));
+      .then(url => this.props.onChangeImageURL(url));
   };
 
   render() {
@@ -45,10 +44,10 @@ class UploadImage extends Component {
       <div>
         <div className="rounded shadow border img-placeholder d-flex align-items-center justify-content-center">
           {!this.state.isUploading &&
-            !this.state.imageURL && <i className="fe fe-image" />}
+            !this.props.imageURL && <i className="fe fe-image" />}
           {!this.state.isUploading &&
-            this.state.imageURL && (
-              <img src={this.state.imageURL} className="rounded img-fluid" />
+            this.props.imageURL && (
+              <img src={this.props.imageURL} className="rounded img-fluid" />
             )}
           {this.state.isUploading && (
             <CircularProgressBar
