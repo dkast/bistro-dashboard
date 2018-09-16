@@ -6,7 +6,6 @@ import Modal from "react-bootstrap4-modal";
 import NumberFormat from "react-number-format";
 
 import { parseNumber } from "../utils";
-
 import { PageWithAuthorization } from "../components/app";
 import SheetView from "../components/layout/sheetView";
 import Layout from "../components/layout";
@@ -14,6 +13,7 @@ import { withFirestore, withPageProps } from "../utils";
 import Loader from "../components/ui/loader";
 import { Router } from "../routes";
 import UploadImage from "../components/ui/uploadImage";
+import { firebase } from "../firebase";
 
 const ACT_ADD = "add";
 const ACT_UPDATE = "update";
@@ -81,6 +81,13 @@ class ItemDetailPage extends Component {
   onDeleteItem = event => {
     event.preventDefault();
     const id = this.props.query.id;
+    //Delete related media
+    if (this.props.item.filename) {
+      firebase.storage
+        .ref("images")
+        .child(this.props.item.filename)
+        .delete();
+    }
     this.props.firestore.delete({ collection: "items", doc: id });
     this.setState({ open: false });
     this.props.onSetNotification({
@@ -211,10 +218,18 @@ const EnhancedItemDetailPage = withFormik({
 class ItemForm extends Component {
   state = {};
 
-  handleImageURL = imageURL => {
+  handleImageURL = (imageURL, filename) => {
     const { values, setValues } = this.props;
-    console.log(imageURL);
-    setValues({ ...values, imageURL });
+    setValues({ ...values, imageURL, filename });
+    //Save changes to keep relation between firestore record and bucket storage
+    let { id, ...valuesNoId } = values;
+    const itemUpdates = {
+      ...valuesNoId,
+      imageURL,
+      filename,
+      updatedAt: this.props.firestore.FieldValue.serverTimestamp()
+    };
+    this.props.firestore.update({ collection: "items", doc: id }, itemUpdates);
   };
 
   render() {
@@ -295,13 +310,15 @@ class ItemForm extends Component {
                 <UploadImage
                   onChangeImageURL={this.handleImageURL}
                   imageURL={values.imageURL}
+                  filename={values.filename}
+                  uploadEnabled={dirty ? true : false}
                 />
               </div>
             </div>
           </div>
           <div className="form-row py-5 border-bottom">
             <div className="col-sm-4">
-              <h4>Precio e Inventario</h4>
+              <h4>Inventario</h4>
             </div>
             <div className="form-row col-sm-8" />
           </div>

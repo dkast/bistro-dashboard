@@ -14,11 +14,20 @@ class UploadImage extends Component {
     };
   }
 
-  handleUploadStart = () =>
+  handleUploadStart = () => {
+    if (this.props.filename) {
+      //Delete prev uploaded image
+      firebase.storage
+        .ref("images")
+        .child(this.props.filename)
+        .delete();
+    }
+
     this.setState({
       isUploading: true,
       progress: 0
     });
+  };
 
   handleProgress = progress =>
     this.setState({
@@ -36,7 +45,7 @@ class UploadImage extends Component {
       .ref("images")
       .child(filename)
       .getDownloadURL()
-      .then(url => this.props.onChangeImageURL(url));
+      .then(url => this.props.onChangeImageURL(url, filename));
   };
 
   render() {
@@ -57,8 +66,13 @@ class UploadImage extends Component {
             />
           )}
         </div>
-        <label className="btn btn-success btn-block mb-0 mt-1">
-          Añadir
+        <label
+          className={
+            "btn btn-success btn-block mb-0 mt-1 " +
+            (this.props.uploadEnabled ? "" : "invisible")
+          }
+        >
+          {this.props.imageURL ? "Modificar imagen" : "Añadir imagen"}
           <FileUploader
             hidden
             accept="image/*"
