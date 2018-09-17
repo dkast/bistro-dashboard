@@ -219,17 +219,39 @@ class ItemForm extends Component {
   state = {};
 
   handleImageURL = (imageURL, filename) => {
-    const { values, setValues } = this.props;
+    const { values, setValues, dbAction } = this.props;
     setValues({ ...values, imageURL, filename });
+
     //Save changes to keep relation between firestore record and bucket storage
-    let { id, ...valuesNoId } = values;
-    const itemUpdates = {
-      ...valuesNoId,
-      imageURL,
-      filename,
-      updatedAt: this.props.firestore.FieldValue.serverTimestamp()
-    };
-    this.props.firestore.update({ collection: "items", doc: id }, itemUpdates);
+    switch (dbAction) {
+      case ACT_ADD:
+        if (!values.name) {
+          setValues({ ...values, name: "Sin Titulo" });
+        }
+        this.props.firestore.add("items", {
+          ...values,
+          imageURL,
+          filename,
+          owner: this.props.authUser.uid
+        });
+        break;
+      case ACT_UPDATE:
+        let { id, ...valuesNoId } = values;
+        const itemUpdates = {
+          ...valuesNoId,
+          imageURL,
+          filename,
+          updatedAt: this.props.firestore.FieldValue.serverTimestamp()
+        };
+        this.props.firestore.update(
+          { collection: "items", doc: id },
+          itemUpdates
+        );
+        break;
+
+      default:
+        break;
+    }
   };
 
   render() {
