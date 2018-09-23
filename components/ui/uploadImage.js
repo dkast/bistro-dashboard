@@ -107,4 +107,8 @@ class UploadImage extends Component {
   }
 }
 
+UploadImage.defaultProps = {
+  uploadEnabled: true
+};
+
 export default UploadImage;

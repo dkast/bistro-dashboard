@@ -3,8 +3,8 @@ import { compose } from "recompose";
 import withAuthentication from "../session/withAuthentication";
 import withAuthorization from "../session/withAuthorization";
 
-const App = ({ children }) => (
-  <div {...this.props} className="app">
+const App = ({ children, props }) => (
+  <div {...props} className="app">
     {children}
   </div>
 );

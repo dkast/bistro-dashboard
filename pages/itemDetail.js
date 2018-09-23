@@ -170,7 +170,7 @@ class ItemDetailPage extends Component {
 }
 
 const EnhancedItemDetailPage = withFormik({
-  enableReinitialize: true,
+  enableReinitialize: false,
   mapPropsToValues: props => {
     return props.item;
   },
@@ -180,6 +180,7 @@ const EnhancedItemDetailPage = withFormik({
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
     //alert(JSON.stringify(values, null, 2));
+    console.dir(props.touched);
     let notificationTitle = "";
     switch (props.dbAction) {
       case ACT_ADD:
@@ -202,7 +203,7 @@ const EnhancedItemDetailPage = withFormik({
         notificationTitle = "Item Modificado";
         break;
     }
-    setSubmitting(false);
+    //setSubmitting(false);
     props.onSetNotification({
       ...props.notification,
       visible: true,
@@ -333,7 +334,6 @@ class ItemForm extends Component {
                   onChangeImageURL={this.handleImageURL}
                   imageURL={values.imageURL}
                   filename={values.filename}
-                  uploadEnabled={dirty ? true : false}
                 />
               </div>
             </div>
