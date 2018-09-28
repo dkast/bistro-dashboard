@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Form, Field, withFormik, ErrorMessage } from "formik";
+import { Form, Field, withFormik, ErrorMessage, Formik } from "formik";
 import * as Yup from "yup";
 import Modal from "react-bootstrap4-modal";
 import NumberFormat from "react-number-format";
@@ -171,15 +171,16 @@ class ItemDetailPage extends Component {
 
 const EnhancedItemDetailPage = withFormik({
   enableReinitialize: false,
-  mapPropsToValues: props => {
-    return props.item;
-  },
+  // mapPropsToValues: props => {
+  //   return props.item;
+  // },
   validationSchema: Yup.object().shape({
     name: Yup.string().required("Nombre es requerido"),
     price: Yup.number().required("Precio es requerido")
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
     //alert(JSON.stringify(values, null, 2));
+    console.dir(props.errors);
     console.dir(props.touched);
     let notificationTitle = "";
     switch (props.dbAction) {
@@ -349,6 +350,45 @@ class ItemForm extends Component {
     );
   }
 }
+
+const ItemFormNew = () => {
+  <Formik
+    onSubmit={(values, { props, setSubmitting }) => {
+      let notificationTitle = "";
+      switch (props.dbAction) {
+        case ACT_ADD:
+          props.firestore.add("items", {
+            ...values,
+            owner: props.authUser.uid
+          });
+          notificationTitle = "Item Creado";
+          break;
+        case ACT_UPDATE:
+          //Substract id from values to avoid duplicate property on firebase document
+          let { id, price, ...valuesNoId } = values;
+          price = parseNumber(price);
+          const itemUpdates = {
+            ...valuesNoId,
+            price: price,
+            updatedAt: props.firestore.FieldValue.serverTimestamp()
+          };
+          props.firestore.update({ collection: "items", doc: id }, itemUpdates);
+          notificationTitle = "Item Modificado";
+          break;
+      }
+      //setSubmitting(false);
+      props.onSetNotification({
+        ...props.notification,
+        visible: true,
+        title: notificationTitle,
+        message: "Los cambios han sido guardados",
+        type: "success"
+      });
+      Router.pushRoute("items");
+    }}
+    render={props => {}}
+  />;
+};
 
 class ModalConfirmation extends Component {
   render() {
