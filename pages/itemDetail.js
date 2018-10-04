@@ -170,10 +170,18 @@ class ItemDetailPage extends Component {
 }
 
 const EnhancedItemDetailPage = withFormik({
-  enableReinitialize: false,
-  // mapPropsToValues: props => {
-  //   return props.item;
-  // },
+  enableReinitialize: true,
+  validateOnBlur: false,
+  validateOnChange: false,
+  mapPropsToValues: props => {
+    return {
+      name: props.item.name || "",
+      description: props.item.description || "",
+      price: props.item.price || "",
+      filename: props.item.filename || "",
+      imageURL: props.item.imageURL || ""
+    };
+  },
   validationSchema: Yup.object().shape({
     name: Yup.string().required("Nombre es requerido"),
     price: Yup.number().required("Precio es requerido")
@@ -227,11 +235,14 @@ class ItemForm extends Component {
     //Save changes to keep relation between firestore record and bucket storage
     switch (dbAction) {
       case ACT_ADD:
-        if (!values.name) {
-          setValues({ ...values, name: "Sin Titulo" });
+        let name = values.name;
+        if (!name) {
+          name = "Sin Titulo";
+          setValues({ ...values, name });
         }
         this.props.firestore.add("items", {
           ...values,
+          name,
           imageURL,
           filename,
           owner: this.props.authUser.uid
@@ -281,16 +292,13 @@ class ItemForm extends Component {
                     type="text"
                     name="name"
                     className={
-                      errors.name && touched.name
-                        ? "form-control is-invalid"
-                        : "form-control"
+                      errors.name ? "form-control is-invalid" : "form-control"
                     }
                     placeholder="Nombre del Producto"
                   />
-                  {touched.name &&
-                    errors.name && (
-                      <div className="invalid-feedback">{errors.name}</div>
-                    )}
+                  {errors.name && (
+                    <div className="invalid-feedback">{errors.name}</div>
+                  )}
                 </div>
                 <div className="form-group col-md-12">
                   <label className="form-label">Descripcion</label>
@@ -313,7 +321,7 @@ class ItemForm extends Component {
                         decimalScale={2}
                         fixedDecimalScale={true}
                         className={
-                          errors.price && touched.price
+                          errors.price
                             ? "form-control is-invalid"
                             : "form-control"
                         }
@@ -321,10 +329,9 @@ class ItemForm extends Component {
                       />
                     )}
                   />
-                  {touched.price &&
-                    errors.price && (
-                      <div className="invalid-feedback">{errors.price}</div>
-                    )}
+                  {errors.price && (
+                    <div className="invalid-feedback">{errors.price}</div>
+                  )}
                 </div>
               </div>
             </div>
@@ -350,45 +357,6 @@ class ItemForm extends Component {
     );
   }
 }
-
-const ItemFormNew = () => {
-  <Formik
-    onSubmit={(values, { props, setSubmitting }) => {
-      let notificationTitle = "";
-      switch (props.dbAction) {
-        case ACT_ADD:
-          props.firestore.add("items", {
-            ...values,
-            owner: props.authUser.uid
-          });
-          notificationTitle = "Item Creado";
-          break;
-        case ACT_UPDATE:
-          //Substract id from values to avoid duplicate property on firebase document
-          let { id, price, ...valuesNoId } = values;
-          price = parseNumber(price);
-          const itemUpdates = {
-            ...valuesNoId,
-            price: price,
-            updatedAt: props.firestore.FieldValue.serverTimestamp()
-          };
-          props.firestore.update({ collection: "items", doc: id }, itemUpdates);
-          notificationTitle = "Item Modificado";
-          break;
-      }
-      //setSubmitting(false);
-      props.onSetNotification({
-        ...props.notification,
-        visible: true,
-        title: notificationTitle,
-        message: "Los cambios han sido guardados",
-        type: "success"
-      });
-      Router.pushRoute("items");
-    }}
-    render={props => {}}
-  />;
-};
 
 class ModalConfirmation extends Component {
   render() {
