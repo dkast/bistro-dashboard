@@ -15,6 +15,11 @@ import { Router } from "../routes";
 import UploadImage from "../components/ui/uploadImage";
 import { firebase } from "../firebase";
 
+Router.events.on("routeChangeStart", url => {
+  //throw new Error("Changes not saved");
+  console.log(url);
+});
+
 const ACT_ADD = "add";
 const ACT_UPDATE = "update";
 
@@ -175,6 +180,7 @@ const EnhancedItemDetailPage = withFormik({
   validateOnChange: false,
   mapPropsToValues: props => {
     return {
+      id: props.item.id || "",
       name: props.item.name || "",
       description: props.item.description || "",
       price: props.item.price || "",
@@ -188,8 +194,8 @@ const EnhancedItemDetailPage = withFormik({
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
     //alert(JSON.stringify(values, null, 2));
-    console.dir(props.errors);
-    console.dir(props.touched);
+    console.dir(props);
+    console.dir(values);
     let notificationTitle = "";
     switch (props.dbAction) {
       case ACT_ADD:
@@ -234,20 +240,20 @@ class ItemForm extends Component {
 
     //Save changes to keep relation between firestore record and bucket storage
     switch (dbAction) {
-      case ACT_ADD:
-        let name = values.name;
-        if (!name) {
-          name = "Sin Titulo";
-          setValues({ ...values, name });
-        }
-        this.props.firestore.add("items", {
-          ...values,
-          name,
-          imageURL,
-          filename,
-          owner: this.props.authUser.uid
-        });
-        break;
+      // case ACT_ADD:
+      //   let name = values.name;
+      //   if (!name) {
+      //     name = "Sin Titulo";
+      //     setValues({ ...values, name });
+      //   }
+      //   this.props.firestore.add("items", {
+      //     ...values,
+      //     name,
+      //     imageURL,
+      //     filename,
+      //     owner: this.props.authUser.uid
+      //   });
+      //   break;
       case ACT_UPDATE:
         let { id, ...valuesNoId } = values;
         const itemUpdates = {
