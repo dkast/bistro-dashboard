@@ -32,6 +32,7 @@ class Page extends Component {
   componentDidMount() {
     this.loadData();
   }
+
   render() {
     const { authUser, items, query } = this.props;
     let item = "";
@@ -69,18 +70,18 @@ class ItemDetailPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false
+      openDeleteModal: false
     };
   }
 
   onShowConfirmDelete = event => {
     event.preventDefault();
-    this.setState({ open: true });
+    this.setState({ openDeleteModal: true });
   };
 
   onDismissConfirmDelete = event => {
     event.preventDefault();
-    this.setState({ open: false });
+    this.setState({ openDeleteModal: false });
   };
 
   onDeleteItem = event => {
@@ -94,7 +95,7 @@ class ItemDetailPage extends Component {
         .delete();
     }
     this.props.firestore.delete({ collection: "items", doc: id });
-    this.setState({ open: false });
+    this.setState({ openDeleteModal: false });
     this.props.onSetNotification({
       title: "Item Eliminado",
       message: "Item ha sido eliminado",
@@ -152,7 +153,7 @@ class ItemDetailPage extends Component {
     return (
       <Layout>
         <ModalConfirmation
-          open={this.state.open}
+          open={this.state.openDeleteModal}
           onConfirm={this.onDeleteItem}
           onDismiss={this.onDismissConfirmDelete}
         />
@@ -196,19 +197,22 @@ const EnhancedItemDetailPage = withFormik({
     //alert(JSON.stringify(values, null, 2));
     console.dir(props);
     console.dir(values);
+
     let notificationTitle = "";
+    //Substract id from values to avoid duplicate property on firebase document
+    let { id, price, ...valuesNoId } = values;
+    price = parseNumber(price);
+
     switch (props.dbAction) {
       case ACT_ADD:
         props.firestore.add("items", {
-          ...values,
+          ...valuesNoId,
+          price: price,
           owner: props.authUser.uid
         });
         notificationTitle = "Item Creado";
         break;
       case ACT_UPDATE:
-        //Substract id from values to avoid duplicate property on firebase document
-        let { id, price, ...valuesNoId } = values;
-        price = parseNumber(price);
         const itemUpdates = {
           ...valuesNoId,
           price: price,
