@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Provider } from "react-redux";
 import App, { Container } from "next/app";
+import Head from "next/head";
+import { Provider } from "react-redux";
 import withRedux from "next-redux-wrapper";
-import "react-table/react-table.css";
 import withNProgress from "next-nprogress";
+import "react-table/react-table.css";
 
 import initStore from "../store";
 import Notification from "../components/ui/notifcation";
@@ -38,6 +39,9 @@ export default withNProgress(MS_DELAY, CONFIG_OPTIONS)(withRedux(initStore))(
       return (
         <>
           <Container>
+            <Head>
+              <title>Bistro Dashboard</title>
+            </Head>
             <Provider store={store}>
               <Notification>
                 <Component {...pageProps} />
@@ -46,8 +50,9 @@ export default withNProgress(MS_DELAY, CONFIG_OPTIONS)(withRedux(initStore))(
           </Container>
           <style jsx global>{`
             #__next,
-            .app {
-              height: 100%;
+            .app,
+            .page {
+              min-height: 100vh !important;
             }
           `}</style>
         </>

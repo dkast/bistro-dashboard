@@ -5,7 +5,7 @@ const Loader = () => (
     <div className="loader" />
     <style jsx>{`
       .spinner {
-        min-height: 100%;
+        min-height: 100vh;
       }
       .loader {
         height: 5rem;

@@ -24,6 +24,10 @@ const ACT_ADD = "add";
 const ACT_UPDATE = "update";
 
 class Page extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   loadData = () => {
     const id = this.props.query.id;
     this.props.firestore.get({ collection: "items", doc: id });
@@ -47,7 +51,9 @@ class Page extends Component {
     if (!items) return <Loader />;
 
     if (items.length) {
-      item = items[0];
+      item = items.find(obj => {
+        return obj.id === query.id;
+      });
     }
 
     return (
@@ -167,7 +173,7 @@ class ItemDetailPage extends Component {
         </Form>
         <style jsx global>{`
           .form-sheet {
-            height: 100%;
+            min-height: 100vh;
           }
         `}</style>
       </Layout>
