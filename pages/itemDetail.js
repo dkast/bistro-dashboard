@@ -54,6 +54,11 @@ class Page extends Component {
       item = items.find(obj => {
         return obj.id === query.id;
       });
+
+      // If nothing was found
+      if (!item) {
+        item = "";
+      }
     }
 
     return (
