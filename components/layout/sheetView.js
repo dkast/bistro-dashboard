@@ -1,30 +1,25 @@
 import { Link } from "../../routes";
 
 const SheetView = props => (
-  <div className="page">
-    <div className="header bg-azure text-light animated fadeInDown faster">
+  <div className="page animated fadeInUp faster">
+    <div className="header">
       <div className="container-fluid">
-        <div className="row">
-          <div className="col-2 h5 my-1">
+        <div className="d-flex justify-content-between">
+          <div className="h5 my-1">
             <Link route={props.routeBack}>
               <a className="back-button">
                 <i className="fe fe-x ml-2 h3" />
-                {/* <span>Regresar</span> */}
               </a>
             </Link>
           </div>
-          <div className="col-7 text-center">
+          <div className="text-center">
             <h3 className="my-1">{props.title}</h3>
           </div>
+          <div>{props.footer}</div>
         </div>
       </div>
     </div>
-    <div className="sheet-body px-3 flex-grow-1 animated fadeIn faster">
-      {props.content}
-    </div>
-    <div className="sheet-footer bg-white py-3 border-top px-3 d-flex justify-content-end">
-      {props.footer}
-    </div>
+    <div className="sheet-body px-3 flex-grow-1">{props.content}</div>
     <style jsx>{`
       .sheet-body {
         overflow: auto;

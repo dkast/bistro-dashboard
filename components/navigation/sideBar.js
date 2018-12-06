@@ -38,7 +38,7 @@ class SideBar extends Component {
                   style={{ fontSize: "1.75em", verticalAlign: "middle" }}
                 />
               </NavIcon>
-              <NavText>Home</NavText>
+              <NavText>Inicio</NavText>
             </NavItem>
             <NavItem eventKey="/items/library">
               <NavIcon>
@@ -47,7 +47,7 @@ class SideBar extends Component {
                   style={{ fontSize: "1.75em", verticalAlign: "middle" }}
                 />
               </NavIcon>
-              <NavText>Items</NavText>
+              <NavText>Menu</NavText>
             </NavItem>
           </Nav>
         </SideNav>

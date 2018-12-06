@@ -118,7 +118,7 @@ class ItemDetailPage extends Component {
     }, 500);
   };
 
-  renderFooter = (action, isSubmitting) => {
+  renderActionButtons = (action, isSubmitting) => {
     switch (action) {
       case ACT_ADD:
         return (
@@ -173,7 +173,7 @@ class ItemDetailPage extends Component {
             title={title}
             routeBack={"items"}
             content={<ItemForm {...this.props} />}
-            footer={this.renderFooter(dbAction, isSubmitting)}
+            footer={this.renderActionButtons(dbAction, isSubmitting)}
           />
         </Form>
         <style jsx global>{`
@@ -303,8 +303,8 @@ class ItemForm extends Component {
     return (
       <div className="row d-flex justify-content-center mt-4">
         <div className="col-lg-10 col-xl-8">
-          <h4 className="py-4">Detalle</h4>
-          <div className="form-row border-bottom">
+          <h4 className="py-4 border-bottom">Detalle</h4>
+          <div className="form-row">
             <div className="col-md-12 col-lg-7">
               <div className="form-row">
                 <div className="form-group col-md-12">
@@ -367,11 +367,30 @@ class ItemForm extends Component {
               </div>
             </div>
           </div>
-          <div className="form-row py-5 border-bottom">
-            <div className="col-sm-4">
-              <h4>Inventario</h4>
+
+          <h4 className="pt-4 pb-2">Punto de Venta</h4>
+          <div className="form-row">
+            <div className="col-md-12">
+              <div className="card">
+                <div className="card-header">
+                  <h5 className="card-title">Item disponible para ordenar</h5>
+                  <div className="card-options">
+                    <label class="custom-switch m-0">
+                      <input
+                        type="checkbox"
+                        value="1"
+                        class="custom-switch-input"
+                      />
+                      <span class="custom-switch-indicator" />
+                    </label>
+                  </div>
+                </div>
+                <div className="card-body text-muted">
+                  Indica si el item esta activo para ordenar a traves de su
+                  aplicacion, de no ser asi el item no aparece en su menu.
+                </div>
+              </div>
             </div>
-            <div className="form-row col-sm-8" />
           </div>
         </div>
       </div>
