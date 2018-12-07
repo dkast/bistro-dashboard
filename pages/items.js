@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import NumberFormat from "react-number-format";
 
 import { PageWithAuthorization } from "../components/app";
-import Head from "../components/head";
 import Layout from "../components/layout";
 import ItemsNavigation from "../components/navigation/itemsNavigation";
 import { withFirestore, withPageProps } from "../utils";
@@ -86,7 +85,6 @@ class ItemsPage extends Component {
                       <div className="toolbar mt-5 mb-2">
                         <div className="form-inline d-flex justify-content-between">
                           <input type="text" className="form-control" />
-                          {/* <button className="btn btn-azure">Add Item</button> */}
                           <Link route="item-detail" params={{ id: "new" }}>
                             <a className="btn btn-azure">Crear Item</a>
                           </Link>
