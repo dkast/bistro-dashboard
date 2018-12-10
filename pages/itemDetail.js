@@ -85,17 +85,17 @@ class ItemDetailPage extends Component {
     };
   }
 
-  onShowConfirmDelete = event => {
-    event.preventDefault();
+  handleShowDeleteModal = event => {
     this.setState({ openDeleteModal: true });
-  };
-
-  onDismissConfirmDelete = event => {
     event.preventDefault();
-    this.setState({ openDeleteModal: false });
   };
 
-  onDeleteItem = event => {
+  handleDismissDeleteModal = event => {
+    this.setState({ openDeleteModal: false });
+    event.preventDefault();
+  };
+
+  handleDeleteItem = event => {
     event.preventDefault();
     const id = this.props.query.id;
     //Delete related media
@@ -135,7 +135,7 @@ class ItemDetailPage extends Component {
           <>
             <button
               className="btn btn-outline-danger mr-2"
-              onClick={this.onShowConfirmDelete}
+              onClick={this.handleShowDeleteModal}
             >
               Eliminar
             </button>
@@ -165,8 +165,8 @@ class ItemDetailPage extends Component {
       <Layout>
         <ModalConfirmation
           open={this.state.openDeleteModal}
-          onConfirm={this.onDeleteItem}
-          onDismiss={this.onDismissConfirmDelete}
+          onConfirm={this.handleDeleteItem}
+          onDismiss={this.handleDismissDeleteModal}
         />
         <Form className="form-sheet">
           <SheetView
@@ -247,7 +247,9 @@ const EnhancedItemDetailPage = withFormik({
 })(ItemDetailPage);
 
 class ItemForm extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
+  }
 
   handleImageURL = (imageURL, filename) => {
     const { values, setValues, dbAction } = this.props;
@@ -375,13 +377,13 @@ class ItemForm extends Component {
                 <div className="card-header">
                   <h5 className="card-title">Item disponible para ordenar</h5>
                   <div className="card-options">
-                    <label class="custom-switch m-0">
+                    <label className="custom-switch m-0">
                       <input
                         type="checkbox"
                         value="1"
-                        class="custom-switch-input"
+                        className="custom-switch-input"
                       />
-                      <span class="custom-switch-indicator" />
+                      <span className="custom-switch-indicator" />
                     </label>
                   </div>
                 </div>
@@ -398,34 +400,30 @@ class ItemForm extends Component {
   }
 }
 
-class ModalConfirmation extends Component {
-  render() {
-    return (
-      <Modal visible={this.props.open}>
-        <div className="modal-header">
-          <h5 className="modal-title">Eliminar Item</h5>
-          <button
-            className="close"
-            type="button"
-            aria-label="Close"
-            onClick={this.props.onDismiss}
-          />
-        </div>
-        <div className="modal-body">
-          <p>¿Desea eliminar este Item? Esta operación no puede deshacerse.</p>
-        </div>
-        <div className="modal-footer">
-          <button className="btn btn-secondary" onClick={this.props.onDismiss}>
-            Cancelar
-          </button>
-          <button className="btn btn-danger" onClick={this.props.onConfirm}>
-            Eliminar
-          </button>
-        </div>
-      </Modal>
-    );
-  }
-}
+const ModalConfirmation = props => (
+  <Modal visible={props.open}>
+    <div className="modal-header">
+      <h5 className="modal-title">Eliminar Item</h5>
+      <button
+        className="close"
+        type="button"
+        aria-label="Close"
+        onClick={props.onDismiss}
+      />
+    </div>
+    <div className="modal-body">
+      <p>¿Desea eliminar este Item? Esta operación no puede deshacerse.</p>
+    </div>
+    <div className="modal-footer">
+      <button className="btn btn-secondary" onClick={props.onDismiss}>
+        Cancelar
+      </button>
+      <button className="btn btn-danger" onClick={props.onConfirm}>
+        Eliminar
+      </button>
+    </div>
+  </Modal>
+);
 
 const mapStateToProps = (state, ownProps) => ({
   authUser: state.sessionState.authUser,

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import NumberFormat from "react-number-format";
+import Modal from "react-bootstrap4-modal";
 
 import { PageWithAuthorization } from "../components/app";
 import Layout from "../components/layout";
@@ -37,10 +37,49 @@ class Page extends Component {
   }
 }
 
+const INITIAL_STATE = {
+  isOpenCategoryModal: false,
+  category: "",
+  error: null
+};
+
 class CategoriesPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ...INITIAL_STATE
+    };
+  }
+
   handleRowClick = rowInfo => {
     console.log(rowInfo);
     Router.pushRoute("item-detail", { id: rowInfo.original.id });
+  };
+
+  handleShowCategoryModal = event => {
+    this.setState({ isOpenCategoryModal: true });
+    event.preventDefault();
+  };
+
+  handleDismissCategoryModal = event => {
+    this.setState({ isOpenCategoryModal: false });
+    event.preventDefault();
+  };
+
+  handleCreateCategory = event => {
+    event.preventDefault();
+    const { category } = this.state;
+    this.props.firestore
+      .add("categories", {
+        category,
+        owner: this.props.authUser.uid
+      })
+      .then(() => {
+        this.setState({ ...INITIAL_STATE });
+      })
+      .catch(error => {
+        this.setState({ error });
+      });
   };
 
   render() {
@@ -62,6 +101,11 @@ class CategoriesPage extends Component {
 
     return (
       <Layout>
+        <ModalForm
+          isOpen={this.state.isOpenCategoryModal}
+          onConfirm={this.handleCreateCategory}
+          onDismiss={this.handleDismissCategoryModal}
+        />
         <div className="page">
           <div className="page-main">
             <PageHeader title="Items" />
@@ -88,7 +132,7 @@ class CategoriesPage extends Component {
                           />
                         </>
                       ) : (
-                        <EmptyState />
+                        <EmptyState onAction={this.handleShowCategoryModal} />
                       )}
                     </div>
                   </div>
@@ -102,9 +146,77 @@ class CategoriesPage extends Component {
   }
 }
 
-const EmptyState = () => (
-  <div className="border p-5 text-center">
-    <h2>No hay nada :(</h2>
+class ModalForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      category: "",
+      error: null
+    };
+  }
+  render() {
+    const { error, category } = this.state;
+    const { isOpen, onDismiss, onConfirm } = this.props;
+    return (
+      <Modal visible={isOpen}>
+        <div className="modal-header">
+          <h5 className="modal-title">Crear Categoria</h5>
+          <button
+            className="close"
+            type="button"
+            aria-label="Close"
+            onClick={onDismiss}
+          />
+        </div>
+        <div className="modal-body">
+          <div className="form">
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">Categoria</span>
+              </div>
+              <input
+                type="text"
+                className={"form-control " + (error ? "is-invalid" : "")}
+                value={category}
+                onChange={event =>
+                  this.setState({
+                    category: event.target.value
+                  })
+                }
+                placeholder="Categoria"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <button className="btn btn-secondary" onClick={onDismiss}>
+            Cancelar
+          </button>
+          <button className="btn btn-azure" onClick={onConfirm}>
+            Guardar
+          </button>
+        </div>
+      </Modal>
+    );
+  }
+}
+
+const EmptyState = props => (
+  <div className="row justify-content-center my-4 p-5 text-center">
+    <div className="col-md-8">
+      <i
+        className="fe fe-layers text-gray"
+        style={{ fontSize: "3.75em", verticalAlign: "middle" }}
+      />
+      <h3 className="mt-5">No hay Categorias</h3>
+      <p className="lead my-5 text-muted">
+        Las categorias le ayudan a organizar su menu y presentar de una mejor
+        manera sus items a sus clientes al momento de ordenar.
+      </p>
+      <button className="btn btn-azure btn-lg" onClick={props.onAction}>
+        Crear una Categoria
+      </button>
+    </div>
   </div>
 );
 
