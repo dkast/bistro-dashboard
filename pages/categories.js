@@ -39,7 +39,7 @@ class Page extends Component {
 
 const INITIAL_STATE = {
   isOpenCategoryModal: false,
-  category: "",
+  categoryName: "",
   error: null
 };
 
@@ -53,7 +53,6 @@ class CategoriesPage extends Component {
 
   handleRowClick = rowInfo => {
     console.log(rowInfo);
-    Router.pushRoute("item-detail", { id: rowInfo.original.id });
   };
 
   handleShowCategoryModal = event => {
@@ -66,14 +65,10 @@ class CategoriesPage extends Component {
     event.preventDefault();
   };
 
-  handleCreateCategory = event => {
-    event.preventDefault();
-    const { category } = this.state;
+  handleCreateCategory = categoryName => {
+    console.log(categoryName);
     this.props.firestore
-      .add("categories", {
-        category,
-        owner: this.props.authUser.uid
-      })
+      .add("categories", { categoryName, owner: this.props.authUser.uid })
       .then(() => {
         this.setState({ ...INITIAL_STATE });
       })
@@ -82,12 +77,33 @@ class CategoriesPage extends Component {
       });
   };
 
+  handleDeleteCategory = categoryId => {
+    alert(categoryId);
+  };
+
   render() {
     const { categories } = this.props;
     const columns = [
       {
         Header: "Categoria",
-        accessor: "name"
+        accessor: "categoryName"
+      },
+      {
+        Header: "",
+        accessor: "id",
+        Cell: row => (
+          <div className="d-flex justify-content-end">
+            <a className="icon mr-3" href="#">
+              <i className="fe fe-edit" />
+            </a>
+            <a
+              className="icon mr-3"
+              onClick={() => this.handleDeleteCategory(row.value)}
+            >
+              <i className="fe fe-trash" />
+            </a>
+          </div>
+        )
       }
     ];
 
@@ -120,7 +136,10 @@ class CategoriesPage extends Component {
                           <div className="toolbar mt-5 mb-2">
                             <div className="form-inline d-flex justify-content-between">
                               <input type="text" className="form-control" />
-                              <button className="btn btn-azure">
+                              <button
+                                className="btn btn-azure"
+                                onClick={this.handleShowCategoryModal}
+                              >
                                 Agregar Categoria
                               </button>
                             </div>
@@ -150,12 +169,12 @@ class ModalForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      category: "",
+      categoryName: "",
       error: null
     };
   }
   render() {
-    const { error, category } = this.state;
+    const { error, categoryName } = this.state;
     const { isOpen, onDismiss, onConfirm } = this.props;
     return (
       <Modal visible={isOpen}>
@@ -177,10 +196,10 @@ class ModalForm extends Component {
               <input
                 type="text"
                 className={"form-control " + (error ? "is-invalid" : "")}
-                value={category}
+                value={categoryName}
                 onChange={event =>
                   this.setState({
-                    category: event.target.value
+                    categoryName: event.target.value
                   })
                 }
                 placeholder="Categoria"
@@ -192,7 +211,10 @@ class ModalForm extends Component {
           <button className="btn btn-secondary" onClick={onDismiss}>
             Cancelar
           </button>
-          <button className="btn btn-azure" onClick={onConfirm}>
+          <button
+            className="btn btn-azure"
+            onClick={() => onConfirm(this.state.categoryName)}
+          >
             Guardar
           </button>
         </div>

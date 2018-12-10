@@ -9,7 +9,7 @@ class SimpleTable extends Component {
           className="-striped -highlight"
           data={this.props.data}
           columns={this.props.columns}
-          minRows={3}
+          minRows={1}
           filterable={this.props.filterable}
           showPagination={false}
           getTdProps={(state, rowInfo, column, instance) => {
