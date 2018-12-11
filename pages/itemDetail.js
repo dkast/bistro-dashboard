@@ -164,7 +164,7 @@ class ItemDetailPage extends Component {
     return (
       <Layout>
         <ModalConfirmation
-          open={this.state.openDeleteModal}
+          isOpen={this.state.openDeleteModal}
           onConfirm={this.handleDeleteItem}
           onDismiss={this.handleDismissDeleteModal}
         />
@@ -401,7 +401,7 @@ class ItemForm extends Component {
 }
 
 const ModalConfirmation = props => (
-  <Modal visible={props.open}>
+  <Modal visible={props.isOpen}>
     <div className="modal-header">
       <h5 className="modal-title">Eliminar Item</h5>
       <button

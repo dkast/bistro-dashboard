@@ -10,10 +10,12 @@ import SimpleTable from "../components/datatable/simpleTable";
 import { Link, Router } from "../routes";
 import PageHeader from "../components/layout/pageHeader";
 
+const ACT_ADD = "add";
+const ACT_UPDATE = "update";
+
 const listenerSettings = {
   collection: "categories"
 };
-
 class Page extends Component {
   loadData = () => {
     this.props.firestore.setListener(listenerSettings);
@@ -38,9 +40,12 @@ class Page extends Component {
 }
 
 const INITIAL_STATE = {
+  selectedRowInfo: null,
   isOpenCategoryModal: false,
+  isOpenDeleteModal: false,
   categoryName: "",
-  error: null
+  error: null,
+  dbAction: null
 };
 
 class CategoriesPage extends Component {
@@ -55,34 +60,111 @@ class CategoriesPage extends Component {
     console.log(rowInfo);
   };
 
-  handleShowCategoryModal = event => {
-    this.setState({ isOpenCategoryModal: true });
+  handleShowAddModal = event => {
+    this.setState({ isOpenCategoryModal: true, dbAction: ACT_ADD });
     event.preventDefault();
+  };
+
+  handleShowUpdateModal = rowInfo => {
+    this.setState({
+      isOpenCategoryModal: true,
+      dbAction: ACT_UPDATE,
+      selectedRowInfo: rowInfo
+    });
   };
 
   handleDismissCategoryModal = event => {
-    this.setState({ isOpenCategoryModal: false });
+    this.setState({ ...INITIAL_STATE });
     event.preventDefault();
   };
 
-  handleCreateCategory = categoryName => {
-    console.log(categoryName);
+  handleDismissDeleteModal = event => {
+    this.setState({ ...INITIAL_STATE });
+    event.preventDefault();
+  };
+
+  handlePromptDeleteModal = rowInfo => {
+    this.setState({ isOpenDeleteModal: true, selectedRowInfo: rowInfo });
+  };
+
+  handleUpsertCategory = categoryName => {
+    const { notification } = this.props;
+    const { dbAction, selectedRowInfo } = this.state;
+    let notificationTitle;
+    switch (dbAction) {
+      case ACT_ADD:
+        notificationTitle = "Categoria Creada";
+        this.props.firestore
+          .add("categories", { categoryName, owner: this.props.authUser.uid })
+          .then(() => {
+            this.setState({ ...INITIAL_STATE });
+          })
+          .catch(error => {
+            this.setState({ error });
+          });
+        break;
+      case ACT_UPDATE:
+        notificationTitle = "Categoria Modificada";
+        const categoryUpdates = {
+          categoryName: categoryName,
+          updatedAt: this.props.firestore.FieldValue.serverTimestamp()
+        };
+        this.props.firestore
+          .update(
+            { collection: "category", doc: selectedRowInfo.original.id },
+            categoryUpdates
+          )
+          .then(() => {
+            this.setState({ ...INITIAL_STATE });
+          })
+          .catch(error => {
+            this.setState({ error });
+          });
+      default:
+        break;
+    }
+
+    this.props.onSetNotification({
+      ...notification,
+      visible: true,
+      title: notificationTitle,
+      message: "Los cambios han sido guardados",
+      type: "success"
+    });
+  };
+
+  handleDeleteCategory = event => {
+    const id = this.state.selectedRowInfo.original.id;
     this.props.firestore
-      .add("categories", { categoryName, owner: this.props.authUser.uid })
+      .delete({ collection: "categories", doc: id })
       .then(() => {
         this.setState({ ...INITIAL_STATE });
+        this.props.onSetNotification({
+          title: "Categoria Eliminada",
+          message: "Categoria ha sido eliminada",
+          type: "success",
+          visible: true
+        });
       })
       .catch(error => {
         this.setState({ error });
       });
   };
 
-  handleDeleteCategory = categoryId => {
-    alert(categoryId);
-  };
-
   render() {
     const { categories } = this.props;
+    const { selectedRowInfo } = this.state;
+    let title, message, defaultValue, keyId;
+
+    if (selectedRowInfo) {
+      title = `Eliminar categoria ${selectedRowInfo.original.categoryName}`;
+      message = `¿Desea eliminar la categoria ${
+        selectedRowInfo.original.categoryName
+      }? Esta operación no puede deshacerse.`;
+      defaultValue = selectedRowInfo.original.categoryName;
+      keyId = selectedRowInfo.original.id;
+    }
+
     const columns = [
       {
         Header: "Categoria",
@@ -93,12 +175,15 @@ class CategoriesPage extends Component {
         accessor: "id",
         Cell: row => (
           <div className="d-flex justify-content-end">
-            <a className="icon mr-3" href="#">
+            <a
+              className="icon mr-3"
+              onClick={() => this.handleShowUpdateModal(row)}
+            >
               <i className="fe fe-edit" />
             </a>
             <a
               className="icon mr-3"
-              onClick={() => this.handleDeleteCategory(row.value)}
+              onClick={() => this.handlePromptDeleteModal(row)}
             >
               <i className="fe fe-trash" />
             </a>
@@ -117,10 +202,23 @@ class CategoriesPage extends Component {
 
     return (
       <Layout>
+        <ModalConfirmation
+          title={title}
+          message={message}
+          isOpen={this.state.isOpenDeleteModal}
+          onConfirm={this.handleDeleteCategory}
+          onDismiss={this.handleDismissDeleteModal}
+        />
+        {/* Use key to create a new instance of the component instead of update
+        the current one
+        https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key*/}
         <ModalForm
           isOpen={this.state.isOpenCategoryModal}
-          onConfirm={this.handleCreateCategory}
+          onConfirm={this.handleUpsertCategory}
           onDismiss={this.handleDismissCategoryModal}
+          dbAction={this.state.dbAction}
+          defaultValue={defaultValue}
+          key={keyId}
         />
         <div className="page">
           <div className="page-main">
@@ -138,7 +236,7 @@ class CategoriesPage extends Component {
                               <input type="text" className="form-control" />
                               <button
                                 className="btn btn-azure"
-                                onClick={this.handleShowCategoryModal}
+                                onClick={this.handleShowAddModal}
                               >
                                 Agregar Categoria
                               </button>
@@ -151,7 +249,7 @@ class CategoriesPage extends Component {
                           />
                         </>
                       ) : (
-                        <EmptyState onAction={this.handleShowCategoryModal} />
+                        <EmptyState onAction={this.handleShowAddModal} />
                       )}
                     </div>
                   </div>
@@ -165,21 +263,60 @@ class CategoriesPage extends Component {
   }
 }
 
+const ModalConfirmation = props => (
+  <Modal visible={props.isOpen}>
+    <div className="modal-header">
+      <h5 className="modal-title">{props.title}</h5>
+      <button
+        className="close"
+        type="button"
+        aria-label="Close"
+        onClick={props.onDismiss}
+      />
+    </div>
+    <div className="modal-body">
+      <p>{props.message}</p>
+    </div>
+    <div className="modal-footer">
+      <button className="btn btn-secondary" onClick={props.onDismiss}>
+        Cancelar
+      </button>
+      <button className="btn btn-danger" onClick={props.onConfirm}>
+        Eliminar
+      </button>
+    </div>
+  </Modal>
+);
+
 class ModalForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      categoryName: "",
+      categoryName: props.defaultValue,
       error: null
     };
   }
+
   render() {
     const { error, categoryName } = this.state;
-    const { isOpen, onDismiss, onConfirm } = this.props;
+    const { isOpen, onDismiss, onConfirm, dbAction, defaultValue } = this.props;
+    let title;
+
+    switch (dbAction) {
+      case ACT_ADD:
+        title = "Crear Categoria";
+        break;
+      case ACT_UPDATE:
+        title = `Renombrar Categoria ${defaultValue}`;
+        break;
+      default:
+        break;
+    }
+
     return (
       <Modal visible={isOpen}>
         <div className="modal-header">
-          <h5 className="modal-title">Crear Categoria</h5>
+          <h5 className="modal-title">{title}</h5>
           <button
             className="close"
             type="button"
@@ -247,4 +384,16 @@ const mapStateToProps = state => ({
   categories: state.firestoreState.ordered.categories
 });
 
-export default withPageProps(withFirestore(connect(mapStateToProps)(Page)));
+const mapDispatchToProps = dispatch => ({
+  onSetNotification: notification =>
+    dispatch({ type: "NOTIFICATION_SET", notification })
+});
+
+export default withPageProps(
+  withFirestore(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(Page)
+  )
+);
