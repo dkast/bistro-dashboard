@@ -11,8 +11,8 @@ class NotificationWrapper extends Component {
       insert: "top",
       container: "top-right",
       animationIn: ["animated", "flipInX"],
-      animationOut: ["animated", "fadeOutRight"],
-      dismiss: { duration: 3000 },
+      animationOut: ["animated", "fadeOut"],
+      dismiss: { duration: 5000 },
       dismissable: { click: true }
     });
   };

@@ -65,32 +65,35 @@ class CategoriesPage extends Component {
     event.preventDefault();
   };
 
-  handleShowUpdateModal = rowInfo => {
+  handleShowUpdateModal = (rowInfo, event) => {
     this.setState({
       isOpenCategoryModal: true,
       dbAction: ACT_UPDATE,
       selectedRowInfo: rowInfo
     });
+    event.preventDefault();
   };
 
   handleDismissCategoryModal = event => {
-    this.setState({ ...INITIAL_STATE });
+    this.setState({ isOpenCategoryModal: false });
     event.preventDefault();
   };
 
   handleDismissDeleteModal = event => {
-    this.setState({ ...INITIAL_STATE });
+    this.setState({ isOpenDeleteModal: false });
     event.preventDefault();
   };
 
-  handlePromptDeleteModal = rowInfo => {
+  handlePromptDeleteModal = (rowInfo, event) => {
     this.setState({ isOpenDeleteModal: true, selectedRowInfo: rowInfo });
+    event.preventDefault();
   };
 
   handleUpsertCategory = categoryName => {
     const { notification } = this.props;
     const { dbAction, selectedRowInfo } = this.state;
     let notificationTitle;
+
     switch (dbAction) {
       case ACT_ADD:
         notificationTitle = "Categoria Creada";
@@ -98,9 +101,22 @@ class CategoriesPage extends Component {
           .add("categories", { categoryName, owner: this.props.authUser.uid })
           .then(() => {
             this.setState({ ...INITIAL_STATE });
+            this.props.onSetNotification({
+              ...notification,
+              visible: true,
+              title: notificationTitle,
+              message: "Los cambios han sido guardados",
+              type: "success"
+            });
           })
           .catch(error => {
             this.setState({ error });
+            this.props.onSetNotification({
+              visible: true,
+              title: "Ha ocurrido un error",
+              message: "Por favor intentelo mas tarde",
+              type: "danger"
+            });
           });
         break;
       case ACT_UPDATE:
@@ -111,26 +127,31 @@ class CategoriesPage extends Component {
         };
         this.props.firestore
           .update(
-            { collection: "category", doc: selectedRowInfo.original.id },
+            { collection: "categories", doc: selectedRowInfo.original.id },
             categoryUpdates
           )
           .then(() => {
             this.setState({ ...INITIAL_STATE });
+            this.props.onSetNotification({
+              ...notification,
+              visible: true,
+              title: notificationTitle,
+              message: "Los cambios han sido guardados",
+              type: "success"
+            });
           })
           .catch(error => {
             this.setState({ error });
+            this.props.onSetNotification({
+              visible: true,
+              title: "Ha ocurrido un error",
+              message: "Por favor intentelo mas tarde",
+              type: "danger"
+            });
           });
       default:
         break;
     }
-
-    this.props.onSetNotification({
-      ...notification,
-      visible: true,
-      title: notificationTitle,
-      message: "Los cambios han sido guardados",
-      type: "success"
-    });
   };
 
   handleDeleteCategory = event => {
@@ -177,13 +198,13 @@ class CategoriesPage extends Component {
           <div className="d-flex justify-content-end">
             <a
               className="icon mr-3"
-              onClick={() => this.handleShowUpdateModal(row)}
+              onClick={e => this.handleShowUpdateModal(row, e)}
             >
               <i className="fe fe-edit" />
             </a>
             <a
               className="icon mr-3"
-              onClick={() => this.handlePromptDeleteModal(row)}
+              onClick={e => this.handlePromptDeleteModal(row, e)}
             >
               <i className="fe fe-trash" />
             </a>
