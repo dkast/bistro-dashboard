@@ -197,7 +197,8 @@ const EnhancedItemDetailPage = withFormik({
       description: props.item.description || "",
       price: props.item.price || "",
       filename: props.item.filename || "",
-      imageURL: props.item.imageURL || ""
+      imageURL: props.item.imageURL || "",
+      isActive: props.item.isActive
     };
   },
   validationSchema: Yup.object().shape({
@@ -374,22 +375,29 @@ class ItemForm extends Component {
           <div className="form-row">
             <div className="col-md-12">
               <div className="card">
-                <div className="card-header">
-                  <h5 className="card-title">Item disponible para ordenar</h5>
-                  <div className="card-options">
-                    <label className="custom-switch m-0">
-                      <input
-                        type="checkbox"
-                        value="1"
-                        className="custom-switch-input"
-                      />
-                      <span className="custom-switch-indicator" />
-                    </label>
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col">
+                      <h4>Item disponible para ordenar</h4>
+                      <small className="text-muted">
+                        Indica si el item esta activo para ordenar a traves de
+                        su aplicacion, de no ser asi el item no aparece en su
+                        menu.
+                      </small>
+                    </div>
+                    <div className="col-auto align-self-center">
+                      <label className="custom-switch m-0">
+                        <Field
+                          name="isActive"
+                          type="checkbox"
+                          className="fcustom-switch-input"
+                          checked={values.isActive}
+                          className="custom-switch-input"
+                        />
+                        <span className="custom-switch-indicator" />
+                      </label>
+                    </div>
                   </div>
-                </div>
-                <div className="card-body text-muted">
-                  Indica si el item esta activo para ordenar a traves de su
-                  aplicacion, de no ser asi el item no aparece en su menu.
                 </div>
               </div>
             </div>
