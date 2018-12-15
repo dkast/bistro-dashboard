@@ -52,7 +52,7 @@ class ItemsPage extends Component {
       },
       {
         Header: "Categoria",
-        accessor: "category"
+        accessor: "category.categoryName"
       },
       {
         Header: "Precio",

@@ -4,6 +4,7 @@ import { Form, Field, withFormik, ErrorMessage, Formik } from "formik";
 import * as Yup from "yup";
 import Modal from "react-bootstrap4-modal";
 import NumberFormat from "react-number-format";
+import Select from "react-select";
 
 import { parseNumber } from "../utils";
 import { PageWithAuthorization } from "../components/app";
@@ -31,6 +32,7 @@ class Page extends Component {
   loadData = () => {
     const id = this.props.query.id;
     this.props.firestore.get({ collection: "items", doc: id });
+    this.props.firestore.get({ collection: "categories" });
   };
 
   componentDidMount() {
@@ -198,6 +200,7 @@ const EnhancedItemDetailPage = withFormik({
       price: props.item.price || "",
       filename: props.item.filename || "",
       imageURL: props.item.imageURL || "",
+      category: props.item.category,
       isActive: props.item.isActive
     };
   },
@@ -301,8 +304,20 @@ class ItemForm extends Component {
       handleChange,
       handleBlur,
       handleSubmit,
-      handleReset
+      handleReset,
+      setFieldValue,
+      setFieldTouched
     } = this.props;
+
+    let options;
+    let isOptionsLoading = false;
+    if (!this.props.categories) {
+      isOptionsLoading = true;
+    } else {
+      isOptionsLoading = false;
+      options = this.props.categories;
+    }
+
     return (
       <div className="row d-flex justify-content-center mt-4">
         <div className="col-lg-10 col-xl-8">
@@ -323,6 +338,15 @@ class ItemForm extends Component {
                   {errors.name && (
                     <div className="invalid-feedback">{errors.name}</div>
                   )}
+                </div>
+                <div className="form-group col-md-12">
+                  <label className="form-label">Categoria</label>
+                  <CategorySelect
+                    value={values.category}
+                    options={options}
+                    onChange={setFieldValue}
+                    onBlur={setFieldTouched}
+                  />
                 </div>
                 <div className="form-group col-md-12">
                   <label className="form-label">Descripcion</label>
@@ -433,9 +457,45 @@ const ModalConfirmation = props => (
   </Modal>
 );
 
+class CategorySelect extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  handleChange = value => {
+    // This is going to call setFeildValue
+    this.props.onChange("category", value);
+  };
+
+  handleBlur = () => {
+    // This is going to call setFieldTouched
+    this.props.onBlur("category", true);
+  };
+
+  render() {
+    if (!this.props.options) {
+      return <Select isDisabled />;
+    } else {
+      return (
+        <Select
+          options={this.props.options}
+          getOptionValue={option => option.id}
+          getOptionLabel={option => option.categoryName}
+          onChange={this.handleChange}
+          onBlur={this.handleBlur}
+          value={this.props.value}
+          placeholder="Seleccionar..."
+          isClearable
+        />
+      );
+    }
+  }
+}
+
 const mapStateToProps = (state, ownProps) => ({
   authUser: state.sessionState.authUser,
   items: state.firestoreState.ordered.items,
+  categories: state.firestoreState.ordered.categories,
   notification: state.uiState.notification
 });
 

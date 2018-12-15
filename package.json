@@ -26,6 +26,7 @@
     "react-notifications-component": "1.0.0",
     "react-number-format": "^4.0.5",
     "react-redux": "^5.1.1",
+    "react-select": "^2.1.2",
     "react-table": "^6.8.6",
     "react-transition-group": "^2.5.0",
     "recompose": "^0.30.0",
