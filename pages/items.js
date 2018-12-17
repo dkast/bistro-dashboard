@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import NumberFormat from "react-number-format";
 
 import { PageWithAuthorization } from "../components/app";
-import Head from "../components/head";
 import Layout from "../components/layout";
 import ItemsNavigation from "../components/navigation/itemsNavigation";
-import withFirestore from "../utils";
-import SimpleTable from "../components/datatables/simpleTable";
-import { Link } from "../routes";
+import { withFirestore, withPageProps } from "../utils";
+import SimpleTable from "../components/datatable/simpleTable";
+import { Link, Router } from "../routes";
+import PageHeader from "../components/layout/pageHeader";
 
 const listenerSettings = {
   collection: "items"
@@ -30,51 +30,97 @@ class Page extends Component {
   render() {
     const { authUser } = this.props;
     return (
-      <>
-        <Head title="Items" />
-        <PageWithAuthorization>
-          {authUser && <ItemsPage {...this.props} />}
-        </PageWithAuthorization>
-      </>
+      <PageWithAuthorization>
+        {authUser && <ItemsPage {...this.props} />}
+      </PageWithAuthorization>
     );
   }
 }
 
 class ItemsPage extends Component {
+  handleRowClick = rowInfo => {
+    console.log(rowInfo);
+    Router.pushRoute("item-detail", { id: rowInfo.original.id });
+  };
+
+  handleCreateItem = event => {
+    event.preventDefault();
+    Router.pushRoute("item-detail", { id: "new" });
+  };
+
   render() {
     const { items } = this.props;
     const columns = [
       {
-        Header: "Product",
-        accessor: "product"
+        Header: "Producto",
+        accessor: "name"
       },
       {
-        Header: "Category",
-        accessor: "category"
+        Header: "Categoria",
+        accessor: "category.categoryName"
       },
       {
-        Header: "Price",
-        accessor: "price"
+        Header: "Precio",
+        accessor: "price",
+        Cell: row => (
+          <NumberFormat
+            value={row.value}
+            prefix={"$"}
+            thousandSeparator={true}
+            decimalScale={2}
+            fixedDecimalScale={true}
+            displayType={"text"}
+          />
+        )
       }
     ];
-    let isLoading = false;
+
+    let hasRecords = false;
+
+    if (items) {
+      if (items.length > 0) {
+        hasRecords = true;
+      }
+    }
 
     return (
       <Layout>
-        <div className="row">
-          <div className="col m-5">
-            <h3>Items</h3>
-            <ItemsNavigation />
-            <div className="toolbar mt-5 mb-2">
-              <div className="form-inline d-flex justify-content-between">
-                <input type="text" className="form-control" />
-                {/* <button className="btn btn-azure">Add Item</button> */}
-                <Link route="item-detail" params={{ id: "new" }}>
-                  <a className="btn btn-azure">Create Item</a>
-                </Link>
+        <div className="page">
+          <div className="page-main">
+            <PageHeader title="Items" />
+            <div className="container-fluid mt-5">
+              <div className="row">
+                <div className="col">
+                  <div className="card">
+                    <div className="card-body">
+                      <ItemsNavigation />
+                      {hasRecords ? (
+                        <>
+                          <div className="toolbar mt-5 mb-2">
+                            <div className="form-inline d-flex justify-content-between">
+                              <input type="text" className="form-control" />
+                              <button
+                                className="btn btn-azure"
+                                onClick={this.handleCreateItem}
+                              >
+                                Crear Item
+                              </button>
+                            </div>
+                          </div>
+                          <SimpleTable
+                            data={items}
+                            columns={columns}
+                            onRowClick={this.handleRowClick}
+                          />
+                        </>
+                      ) : (
+                        <EmptyState onAction={this.handleCreateItem} />
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <SimpleTable data={items} columns={columns} />
           </div>
         </div>
       </Layout>
@@ -82,9 +128,28 @@ class ItemsPage extends Component {
   }
 }
 
+const EmptyState = props => (
+  <div className="row justify-content-center my-4 p-5 text-center">
+    <div className="col-md-8">
+      <i
+        className="fe fe-grid text-gray"
+        style={{ fontSize: "3.75em", verticalAlign: "middle" }}
+      />
+      <h3 className="mt-5">No hay Items</h3>
+      <p className="lead my-5 text-muted">
+        Inicie creando un Item para añadir a su menu y asi sus clientes puedan
+        realizar sus pedidos.
+      </p>
+      <button className="btn btn-azure btn-lg" onClick={props.onAction}>
+        Crear un Item
+      </button>
+    </div>
+  </div>
+);
+
 const mapStateToProps = state => ({
   authUser: state.sessionState.authUser,
-  users: state.firestoreState.ordered.items
+  items: state.firestoreState.ordered.items
 });
 
-export default withFirestore(connect(mapStateToProps)(Page));
+export default withPageProps(withFirestore(connect(mapStateToProps)(Page)));

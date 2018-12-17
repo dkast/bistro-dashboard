@@ -1,28 +1,40 @@
 {
   "name": "create-next-example-app",
   "scripts": {
-    "dev": "node server.js",
+    "dev": "node --inspect server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server"
   },
   "dependencies": {
     "@trendmicro/react-sidenav": "^0.4.5",
-    "@zeit/next-css": "^0.2.0",
-    "dotenv": "^6.0.0",
-    "express": "^4.16.3",
-    "firebase": "^5.3.0",
-    "next": "^6.1.1",
-    "next-redux-wrapper": "2.0.0-beta.6",
+    "@zeit/next-css": "^1.0.1",
+    "animate.css": "^3.7.0",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "firebase": "^5.7.0",
+    "formik": "^1.4.0",
+    "next": "^7.0.2",
+    "next-nprogress": "~1.1.0",
+    "next-page-transitions": "^1.0.0-alpha.4",
+    "next-redux-wrapper": "2.0.0",
     "next-routes": "^1.4.2",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "react-redux": "^5.0.7",
+    "react": "^16.6.3",
+    "react-bootstrap4-modal": "^1.7.0",
+    "react-circular-progressbar": "^1.0.0",
+    "react-dom": "^16.6.3",
+    "react-firebase-file-uploader": "^2.4.2",
+    "react-notifications-component": "1.0.0",
+    "react-number-format": "^4.0.5",
+    "react-redux": "^5.1.1",
+    "react-select": "^2.1.2",
     "react-table": "^6.8.6",
-    "recompose": "^0.27.1",
-    "redux": "^4.0.0",
-    "redux-firestore": "^0.5.7"
+    "react-transition-group": "^2.5.0",
+    "recompose": "^0.30.0",
+    "redux": "^4.0.1",
+    "redux-firestore": "^0.6.0",
+    "yup": "^0.26.6"
   },
   "devDependencies": {
-    "redux-devtools-extension": "^2.13.5"
+    "redux-devtools-extension": "^2.13.7"
   }
 }

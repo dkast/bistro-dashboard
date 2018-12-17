@@ -1,34 +1,33 @@
 import React, { Component } from "react";
-import Router from "next/router";
 import { connect } from "react-redux";
 
 import { PageWithAuthentication } from "../components/app";
 import { auth } from "../firebase";
 import { SignUpLink } from "./signup";
 import CenterFrame from "./../components/layout/centerFrame";
-import Head from "../components/head";
-import { Link } from "../routes";
+import { Link, Router } from "../routes";
 
 const SignInPage = () => (
-  <>
-    <Head title="Sign In" />
-    <PageWithAuthentication>
-      <CenterFrame>
-        <div className="col-md-8">
-          <div className="card-group shadow-lg">
-            <div className="card">
-              <div className="card-body p-6">
-                <h5 className="card-title">Welcome</h5>
-                <SignInForm />
-                <SignUpLink />
-              </div>
+  <PageWithAuthentication>
+    <CenterFrame>
+      <div className="col-md-10 col-lg-8">
+        <div className="card-group shadow-lg animated fadeIn">
+          <div className="card">
+            <div className="card-body p-6">
+              <h2 className="text-azure">Bistro</h2>
+              <h5 className="card-title">
+                Bienvenido, por favor ingresa con tu cuenta.
+              </h5>
+              <SignInForm />
+              <div className="mt-8" />
+              <SignUpLink />
             </div>
-            <div className="card bg-svg text-light d-none d-md-none d-lg-block" />
           </div>
+          <div className="card bg-svg text-light d-none d-md-none d-lg-block" />
         </div>
-      </CenterFrame>
-    </PageWithAuthentication>
-  </>
+      </div>
+    </CenterFrame>
+  </PageWithAuthentication>
 );
 
 const INITIAL_STATE = {
@@ -50,7 +49,7 @@ class SignInForm extends Component {
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState(() => ({ ...INITIAL_STATE }));
-        Router.push("/");
+        Router.pushRoute("/");
       })
       .catch(error => {
         this.setState({
@@ -67,7 +66,7 @@ class SignInForm extends Component {
     const isInvalid = password === "" || email === "";
 
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit} className={error ? "animated shake" : ""}>
         <div className="form-group">
           <div className="input-icon mb-3">
             <span className="input-icon-addon">
@@ -82,7 +81,7 @@ class SignInForm extends Component {
                   email: event.target.value
                 })
               }
-              placeholder="Email"
+              placeholder="E-mail"
             />
           </div>
           <div className="input-icon mb-3">
@@ -98,7 +97,7 @@ class SignInForm extends Component {
                   password: event.target.value
                 })
               }
-              placeholder="Password"
+              placeholder="Contraseña"
             />
           </div>
         </div>
@@ -108,7 +107,7 @@ class SignInForm extends Component {
           disabled={isInvalid}
           type="submit"
         >
-          Sign In
+          Continuar
         </button>
 
         {error && (
@@ -121,9 +120,9 @@ class SignInForm extends Component {
 
 const SignInLink = () => (
   <span>
-    Already have an account?{" "}
+    ¿Ya tienes una cuenta?{" "}
     <Link route="signin">
-      <a>Sign In</a>
+      <a>Ingresa</a>
     </Link>
   </span>
 );

@@ -1,19 +1,26 @@
 import React, { Component } from "react";
-import { Provider } from "react-redux";
 import App, { Container } from "next/app";
+import Head from "next/head";
+import { Provider } from "react-redux";
 import withRedux from "next-redux-wrapper";
+import withNProgress from "next-nprogress";
 import "react-table/react-table.css";
-import initStore from "../store";
 
-export default withRedux(initStore)(
+import initStore from "../store";
+import Notification from "../components/ui/notifcation";
+
+const MS_DELAY = 200;
+const CONFIG_OPTIONS = { trickleSpeed: 50 };
+
+export default withNProgress(MS_DELAY, CONFIG_OPTIONS)(withRedux(initStore))(
   class MyApp extends App {
-    static async getInitialProps({ Component, ctx, pathname }) {
+    static async getInitialProps({ Component, ctx }) {
       if (ctx.isServer) {
-        const pathname = ctx.pathname;
-        console.log(pathname);
+        const asPath = ctx.asPath;
+        console.log(asPath);
         ctx.store.dispatch({
           type: "SIDEBAR_SELECTED_SET",
-          routeSelected: pathname
+          routeSelected: asPath
         });
       }
 
@@ -32,14 +39,20 @@ export default withRedux(initStore)(
       return (
         <>
           <Container>
+            <Head>
+              <title>Bistro Dashboard</title>
+            </Head>
             <Provider store={store}>
-              <Component {...pageProps} />
+              <Notification>
+                <Component {...pageProps} />
+              </Notification>
             </Provider>
           </Container>
           <style jsx global>{`
             #__next,
-            .app {
-              height: 100%;
+            .app,
+            .page {
+              min-height: 100vh !important;
             }
           `}</style>
         </>

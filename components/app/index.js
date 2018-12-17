@@ -3,8 +3,8 @@ import { compose } from "recompose";
 import withAuthentication from "../session/withAuthentication";
 import withAuthorization from "../session/withAuthorization";
 
-const Page = ({ children }) => (
-  <div {...this.props} className="app">
+const App = ({ children, props }) => (
+  <div {...props} className="app">
     {children}
   </div>
 );
@@ -12,11 +12,11 @@ const Page = ({ children }) => (
 const PageWithAuthentication = compose(
   withAuthentication,
   withAuthorization(false)
-)(Page);
+)(App);
 
 const PageWithAuthorization = compose(
   withAuthentication,
   withAuthorization(true)
-)(Page);
+)(App);
 
 export { PageWithAuthentication, PageWithAuthorization };

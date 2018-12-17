@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import css from "styled-jsx/css";
-import Router from "next/router";
 import SideNav, {
   Toggle,
   Nav,
@@ -10,6 +9,7 @@ import SideNav, {
   NavText
 } from "@trendmicro/react-sidenav";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
+import { Router } from "../../routes";
 
 class SideBar extends Component {
   onToggle = expanded => {
@@ -18,13 +18,17 @@ class SideBar extends Component {
 
   onSelect = selected => {
     this.props.onSetRouteSelected(selected);
-    Router.push(selected);
+    Router.pushRoute(selected);
   };
 
   render() {
     return (
       <>
-        <SideNav onToggle={this.onToggle} onSelect={this.onSelect}>
+        <SideNav
+          onToggle={this.onToggle}
+          onSelect={this.onSelect}
+          expanded={this.props.expanded}
+        >
           <Toggle />
           <Nav selected={this.props.selected}>
             <NavItem eventKey="/">
@@ -34,7 +38,7 @@ class SideBar extends Component {
                   style={{ fontSize: "1.75em", verticalAlign: "middle" }}
                 />
               </NavIcon>
-              <NavText>Home</NavText>
+              <NavText>Inicio</NavText>
             </NavItem>
             <NavItem eventKey="/items/library">
               <NavIcon>
@@ -43,15 +47,14 @@ class SideBar extends Component {
                   style={{ fontSize: "1.75em", verticalAlign: "middle" }}
                 />
               </NavIcon>
-              <NavText>Items</NavText>
+              <NavText>Menu</NavText>
             </NavItem>
           </Nav>
         </SideNav>
         <style jsx global>{`
           .sidenav---sidenav---_2tBP {
-            background-color: #2d3436;
+            background-color: #2b2d30 !important;
           }
-
           .sidenav---navicon---3gCRo i {
             color: rgba(255, 255, 255, 0.9) !important;
           }
