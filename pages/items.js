@@ -43,6 +43,11 @@ class ItemsPage extends Component {
     Router.pushRoute("item-detail", { id: rowInfo.original.id });
   };
 
+  handleCreateItem = event => {
+    event.preventDefault();
+    Router.pushRoute("item-detail", { id: "new" });
+  };
+
   render() {
     const { items } = this.props;
     const columns = [
@@ -69,7 +74,14 @@ class ItemsPage extends Component {
         )
       }
     ];
-    let isLoading = false;
+
+    let hasRecords = false;
+
+    if (items) {
+      if (items.length > 0) {
+        hasRecords = true;
+      }
+    }
 
     return (
       <Layout>
@@ -82,19 +94,28 @@ class ItemsPage extends Component {
                   <div className="card">
                     <div className="card-body">
                       <ItemsNavigation />
-                      <div className="toolbar mt-5 mb-2">
-                        <div className="form-inline d-flex justify-content-between">
-                          <input type="text" className="form-control" />
-                          <Link route="item-detail" params={{ id: "new" }}>
-                            <a className="btn btn-azure">Crear Item</a>
-                          </Link>
-                        </div>
-                      </div>
-                      <SimpleTable
-                        data={items}
-                        columns={columns}
-                        onRowClick={this.handleRowClick}
-                      />
+                      {hasRecords ? (
+                        <>
+                          <div className="toolbar mt-5 mb-2">
+                            <div className="form-inline d-flex justify-content-between">
+                              <input type="text" className="form-control" />
+                              <button
+                                className="btn btn-azure"
+                                onClick={this.handleCreateItem}
+                              >
+                                Crear Item
+                              </button>
+                            </div>
+                          </div>
+                          <SimpleTable
+                            data={items}
+                            columns={columns}
+                            onRowClick={this.handleRowClick}
+                          />
+                        </>
+                      ) : (
+                        <EmptyState onAction={this.handleCreateItem} />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -106,6 +127,25 @@ class ItemsPage extends Component {
     );
   }
 }
+
+const EmptyState = props => (
+  <div className="row justify-content-center my-4 p-5 text-center">
+    <div className="col-md-8">
+      <i
+        className="fe fe-grid text-gray"
+        style={{ fontSize: "3.75em", verticalAlign: "middle" }}
+      />
+      <h3 className="mt-5">No hay Items</h3>
+      <p className="lead my-5 text-muted">
+        Inicie creando un Item para añadir a su menu y asi sus clientes puedan
+        realizar sus pedidos.
+      </p>
+      <button className="btn btn-azure btn-lg" onClick={props.onAction}>
+        Crear un Item
+      </button>
+    </div>
+  </div>
+);
 
 const mapStateToProps = state => ({
   authUser: state.sessionState.authUser,
