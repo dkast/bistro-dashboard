@@ -10,12 +10,16 @@ import { Link, Router } from "../routes";
 const SignInPage = () => (
   <PageWithAuthentication>
     <CenterFrame>
-      <div className="col-md-8">
+      <div className="col-md-10 col-lg-8">
         <div className="card-group shadow-lg animated fadeIn">
           <div className="card">
             <div className="card-body p-6">
-              <h5 className="card-title">Bienvenido</h5>
+              <h2 className="text-azure">Bistro</h2>
+              <h5 className="card-title">
+                Bienvenido, por favor ingresa con tu cuenta.
+              </h5>
               <SignInForm />
+              <div className="mt-8" />
               <SignUpLink />
             </div>
           </div>

@@ -53,9 +53,8 @@ class SideBar extends Component {
         </SideNav>
         <style jsx global>{`
           .sidenav---sidenav---_2tBP {
-            background-color: #262f3d !important;
+            background-color: #2b2d30 !important;
           }
-
           .sidenav---navicon---3gCRo i {
             color: rgba(255, 255, 255, 0.9) !important;
           }
