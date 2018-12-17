@@ -25,4 +25,27 @@ const withFirestore = WrappedComponent => {
   return WithFirestore;
 };
 
-export default withFirestore;
+const withPageProps = WrappedComponent => {
+  class WithPageProps extends Component {
+    static async getInitialProps({ isServer, pathname, asPath, query }) {
+      return { isServer, pathname, asPath, query };
+    }
+
+    render() {
+      return <WrappedComponent {...this.props} />;
+    }
+  }
+
+  return WithPageProps;
+};
+
+const parseNumber = (value, locale = navigator.language) => {
+  const example = Intl.NumberFormat(locale).format("1.1");
+  const cleanPattern = new RegExp(`[^-+0-9${example.charAt(1)}]`, "g");
+  const cleaned = value.toString().replace(cleanPattern, "");
+  const normalized = cleaned.replace(example.charAt(1), ".");
+
+  return parseFloat(normalized);
+};
+
+export { withPageProps, withFirestore, parseNumber };

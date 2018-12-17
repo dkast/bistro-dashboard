@@ -6,7 +6,6 @@ export default class MyDocument extends Document {
       <html>
         <Head>
           <meta charSet="UTF-8" />
-          <title>Bistro Dashboard</title>
           <meta name="description" content="Bistro Dashboard" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" sizes="192x192" href="/static/touch-icon.png" />
@@ -24,8 +23,6 @@ export default class MyDocument extends Document {
           />
           <link href="/static/css/tabler.css" rel="stylesheet" />
           <link href="/static/css/bg-svg.css" rel="stylesheet" />
-          {/* Using Next-CSS plugin */}
-          <link href="/_next/static/style.css" rel="stylesheet" />
         </Head>
         <body>
           <Main />

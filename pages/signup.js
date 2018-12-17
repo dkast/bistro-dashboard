@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { compose } from "redux";
 
 import { PageWithAuthentication } from "../components/app";
@@ -7,17 +6,16 @@ import { auth } from "../firebase";
 import { connect } from "react-redux";
 import { SignInLink } from "./signin";
 import CenterFrame from "./../components/layout/centerFrame";
-import withFirestore from "../utils";
-import Head from "../components/head";
+import { withFirestore } from "../utils";
 import { Link, Router } from "../routes";
 
 const SignUpPage = props => (
   <PageWithAuthentication>
     <CenterFrame>
       <div className="col-md-6">
-        <div className="card shadow-lg">
+        <div className="card shadow-lg animated fadeIn">
           <div className="card-body p-6">
-            <h5 className="card-title">Create New Account</h5>
+            <h5 className="card-title">Crear nueva cuenta</h5>
             <SignUpForm {...props} />
             <SignInLink />
           </div>
@@ -86,7 +84,7 @@ class SignUpForm extends Component {
     return (
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
-          <label className="form-label">Name</label>
+          <label className="form-label">Nombre</label>
           <input
             type="text"
             className={"form-control mb-3 " + (error ? "is-invalid" : "")}
@@ -96,9 +94,9 @@ class SignUpForm extends Component {
                 username: event.target.value
               })
             }
-            placeholder="Enter name"
+            placeholder="Introduce tu nombre"
           />
-          <label className="form-label">Email Address</label>
+          <label className="form-label">Dirección E-mail</label>
           <input
             type="text"
             className={"form-control mb-3 " + (error ? "is-invalid" : "")}
@@ -108,9 +106,9 @@ class SignUpForm extends Component {
                 email: event.target.value
               })
             }
-            placeholder="Enter email"
+            placeholder="Introduce tu e-mail"
           />
-          <label className="form-label">Password</label>
+          <label className="form-label">Contraseña</label>
           <input
             type="password"
             className={"form-control mb-3 " + (error ? "is-invalid" : "")}
@@ -120,7 +118,7 @@ class SignUpForm extends Component {
                 passwordOne: event.target.value
               })
             }
-            placeholder="Password"
+            placeholder="Contraseña"
           />
           <input
             type="password"
@@ -131,7 +129,7 @@ class SignUpForm extends Component {
                 passwordTwo: event.target.value
               })
             }
-            placeholder="Confirm password"
+            placeholder="Confirmar contraseña"
           />
         </div>
         <button
@@ -139,7 +137,7 @@ class SignUpForm extends Component {
           disabled={isInvalid}
           type="submit"
         >
-          Sign Up
+          Crear cuenta
         </button>
         {error && (
           <div className="alert alert-danger mb-3">{error.message}</div>
@@ -151,9 +149,9 @@ class SignUpForm extends Component {
 
 const SignUpLink = () => (
   <span>
-    Don't have an account?{" "}
+    ¿No tienes una cuenta?{" "}
     <Link route="signup">
-      <a>Sign Up</a>
+      <a>Crea cuenta</a>
     </Link>
   </span>
 );

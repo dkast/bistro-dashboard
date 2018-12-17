@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import SideBar from "../navigation/sideBar";
 import NProgressStyles from "next-nprogress/styles";
+
+import SideBar from "../navigation/sideBar";
 
 class Layout extends Component {
   render() {
@@ -11,24 +12,24 @@ class Layout extends Component {
       <div className="wrapper">
         <NProgressStyles color="#29d" spinner={false} />
         <SideBar selected={routeSelected} expanded={sideBarExpanded} />
-        <div className="main">
-          <div className="container-fluid">{this.props.children}</div>
-        </div>
-        <style jsx>
-          {`
-            .main {
-              position: relative;
-              overflow: hidden;
-              transition: all 0.15s;
-              margin-left: ${sideBarExpanded ? "240" : "64"}px;
-            }
+        <div className="page-main main">{this.props.children}</div>
+        <style jsx>{`
+          .main {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.15s;
+            margin-left: ${sideBarExpanded ? "240" : "64"}px;
+          }
 
-            .wrapper {
-              position: relative;
-              min-height: 100%;
-            }
-          `}
-        </style>
+          .wrapper {
+            position: relative;
+            min-height: 100vh;
+          }
+
+          .container-fluid {
+            height: 100%;
+          }
+        `}</style>
       </div>
     );
   }
@@ -36,7 +37,16 @@ class Layout extends Component {
 
 const mapStateToProps = state => ({
   sideBarExpanded: state.uiState.sideBarExpanded,
-  routeSelected: state.uiState.routeSelected
+  routeSelected: state.uiState.routeSelected,
+  notification: state.uiState.notification
 });
 
-export default connect(mapStateToProps)(Layout);
+const mapDispatchToProps = dispatch => ({
+  onSetNotification: notification =>
+    dispatch({ type: "NOTIFICATION_SET", notification })
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Layout);

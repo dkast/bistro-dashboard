@@ -38,7 +38,7 @@ class SideBar extends Component {
                   style={{ fontSize: "1.75em", verticalAlign: "middle" }}
                 />
               </NavIcon>
-              <NavText>Home</NavText>
+              <NavText>Inicio</NavText>
             </NavItem>
             <NavItem eventKey="/items/library">
               <NavIcon>
@@ -47,13 +47,13 @@ class SideBar extends Component {
                   style={{ fontSize: "1.75em", verticalAlign: "middle" }}
                 />
               </NavIcon>
-              <NavText>Items</NavText>
+              <NavText>Menu</NavText>
             </NavItem>
           </Nav>
         </SideNav>
         <style jsx global>{`
           .sidenav---sidenav---_2tBP {
-            background-color: #2d3436;
+            background-color: #262f3d !important;
           }
 
           .sidenav---navicon---3gCRo i {
