@@ -6,6 +6,7 @@ import { auth } from "../firebase";
 import { SignUpLink } from "./signup";
 import CenterFrame from "./../components/layout/centerFrame";
 import { Link, Router } from "../routes";
+import "../static/css/bg-svg.css";
 
 const SignInPage = () => (
   <PageWithAuthentication>
@@ -33,7 +34,8 @@ const SignInPage = () => (
 const INITIAL_STATE = {
   email: "",
   password: "",
-  error: null
+  error: null,
+  isSubmitting: false
 };
 
 class SignInForm extends Component {
@@ -45,6 +47,8 @@ class SignInForm extends Component {
   onSubmit = event => {
     const { email, password } = this.state;
 
+    this.setState({ isSubmitting: true });
+
     auth
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
@@ -53,7 +57,8 @@ class SignInForm extends Component {
       })
       .catch(error => {
         this.setState({
-          error: error
+          error: error,
+          isSubmitting: false
         });
       });
 
@@ -61,12 +66,15 @@ class SignInForm extends Component {
   };
 
   render() {
-    const { email, password, error } = this.state;
+    const { email, password, error, isSubmitting } = this.state;
 
     const isInvalid = password === "" || email === "";
 
     return (
-      <form onSubmit={this.onSubmit} className={error ? "animated shake" : ""}>
+      <form
+        onSubmit={this.onSubmit}
+        className={error ? "animated shake faster" : ""}
+      >
         <div className="form-group">
           <div className="input-icon mb-3">
             <span className="input-icon-addon">
@@ -103,7 +111,10 @@ class SignInForm extends Component {
         </div>
 
         <button
-          className="btn btn-azure btn-block mb-3"
+          className={
+            "btn btn-azure btn-block mb-3 " +
+            (isSubmitting ? "btn-loading" : "")
+          }
           disabled={isInvalid}
           type="submit"
         >
