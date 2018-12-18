@@ -10,7 +10,7 @@ class Layout extends Component {
 
     return (
       <div className="wrapper">
-        <NProgressStyles color="#29d" spinner={false} />
+        <NProgressStyles color="#2684ff" spinner={false} />
         <SideBar selected={routeSelected} expanded={sideBarExpanded} />
         <div className="page-main main">{this.props.children}</div>
         <style jsx>{`

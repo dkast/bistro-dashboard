@@ -125,7 +125,7 @@ class ItemDetailPage extends Component {
       case ACT_ADD:
         return (
           <button
-            className="btn btn-azure"
+            className="btn btn-primary"
             type="submit"
             disabled={isSubmitting}
           >
@@ -142,7 +142,7 @@ class ItemDetailPage extends Component {
               Eliminar
             </button>
             <button
-              className="btn btn-azure"
+              className="btn btn-primary"
               type="submit"
               disabled={isSubmitting}
             >

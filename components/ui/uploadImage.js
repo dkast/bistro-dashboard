@@ -51,13 +51,13 @@ class UploadImage extends Component {
   render() {
     return (
       <div>
-        <div className="rounded shadow border img-placeholder d-flex align-items-center justify-content-center">
-          {!this.state.isUploading &&
-            !this.props.imageURL && <i className="fe fe-image" />}
-          {!this.state.isUploading &&
-            this.props.imageURL && (
-              <img src={this.props.imageURL} className="rounded img-fluid" />
-            )}
+        <div className="rounded shadow border img-placeholder bg-gray-lightest d-flex align-items-center justify-content-center">
+          {!this.state.isUploading && !this.props.imageURL && (
+            <i className="fe fe-image" />
+          )}
+          {!this.state.isUploading && this.props.imageURL && (
+            <img src={this.props.imageURL} className="rounded img-fluid" />
+          )}
           {this.state.isUploading && (
             <CircularProgressBar
               percentage={this.state.progress}
@@ -88,14 +88,13 @@ class UploadImage extends Component {
         </label>
         <style jsx>{`
           .img-placeholder {
-            background-color: #f5f5f5;
             width: 320px;
             height: 200px;
           }
 
           .img-placeholder i {
             font-size: 6rem;
-            color: #e0e0e0;
+            color: #dee2e6;
           }
 
           div :global(.circular-progress) {

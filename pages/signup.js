@@ -133,7 +133,7 @@ class SignUpForm extends Component {
           />
         </div>
         <button
-          className="btn btn-azure btn-block mb-3"
+          className="btn btn-primary btn-block mb-3"
           disabled={isInvalid}
           type="submit"
         >

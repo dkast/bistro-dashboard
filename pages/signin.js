@@ -112,7 +112,7 @@ class SignInForm extends Component {
 
         <button
           className={
-            "btn btn-azure btn-block mb-3 " +
+            "btn btn-primary btn-block mb-3 " +
             (isSubmitting ? "btn-loading" : "")
           }
           disabled={isInvalid}

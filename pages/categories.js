@@ -256,7 +256,7 @@ class CategoriesPage extends Component {
                             <div className="form-inline d-flex justify-content-between">
                               <input type="text" className="form-control" />
                               <button
-                                className="btn btn-azure"
+                                className="btn btn-primary"
                                 onClick={this.handleShowAddModal}
                               >
                                 Agregar Categoria
@@ -370,7 +370,7 @@ class ModalForm extends Component {
             Cancelar
           </button>
           <button
-            className="btn btn-azure"
+            className="btn btn-primary"
             onClick={() => onConfirm(this.state.categoryName)}
           >
             Guardar
@@ -393,7 +393,7 @@ const EmptyState = props => (
         Las categorias le ayudan a organizar su menu y presentar de una mejor
         manera sus items a sus clientes al momento de ordenar.
       </p>
-      <button className="btn btn-azure btn-lg" onClick={props.onAction}>
+      <button className="btn btn-primary btn-lg" onClick={props.onAction}>
         Crear una Categoria
       </button>
     </div>
