@@ -21,8 +21,6 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700"
             rel="stylesheet"
           />
-          <link href="/static/css/tabler.css" rel="stylesheet" />
-          <link href="/static/css/bg-svg.css" rel="stylesheet" />
         </Head>
         <body>
           <Main />

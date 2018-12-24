@@ -100,7 +100,7 @@ class ItemsPage extends Component {
                             <div className="form-inline d-flex justify-content-between">
                               <input type="text" className="form-control" />
                               <button
-                                className="btn btn-azure"
+                                className="btn btn-primary"
                                 onClick={this.handleCreateItem}
                               >
                                 Crear Item
@@ -140,7 +140,7 @@ const EmptyState = props => (
         Inicie creando un Item para añadir a su menu y asi sus clientes puedan
         realizar sus pedidos.
       </p>
-      <button className="btn btn-azure btn-lg" onClick={props.onAction}>
+      <button className="btn btn-primary btn-lg" onClick={props.onAction}>
         Crear un Item
       </button>
     </div>

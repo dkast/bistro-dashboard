@@ -8,6 +8,7 @@ import "react-table/react-table.css";
 
 import initStore from "../store";
 import Notification from "../components/ui/notifcation";
+import "../static/scss/bundle.scss";
 
 const MS_DELAY = 200;
 const CONFIG_OPTIONS = { trickleSpeed: 50 };
