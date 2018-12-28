@@ -316,7 +316,7 @@ class ItemForm extends Component {
 
     return (
       <div className="row d-flex justify-content-center mt-4">
-        <div className="col-lg-10 col-xl-8">
+        <div className="col-lg-11 col-xl-10">
           <h4 className="py-4 border-bottom">Detalle</h4>
           <div className="form-row">
             <div className="col-md-12 col-lg-7">

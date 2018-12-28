@@ -77,8 +77,8 @@ class UploadImage extends Component {
             hidden
             accept="image/*"
             randomizeFilename
-            maxWidth={640}
-            maxHeight={400}
+            maxWidth={720}
+            maxHeight={720}
             storageRef={firebase.storage.ref("images")}
             onUploadStart={this.handleUploadStart}
             onUploadError={this.handleUploadError}
@@ -88,8 +88,8 @@ class UploadImage extends Component {
         </label>
         <style jsx>{`
           .img-placeholder {
-            width: 320px;
-            height: 200px;
+            width: 360px;
+            height: 360px;
           }
 
           .img-placeholder i {
