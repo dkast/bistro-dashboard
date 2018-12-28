@@ -241,39 +241,35 @@ class CategoriesPage extends Component {
           defaultValue={defaultValue}
           key={keyId}
         />
-        <div className="page">
-          <div className="page-main">
-            <PageHeader title="Items" />
-            <div className="container-fluid mt-5">
-              <div className="row">
-                <div className="col">
-                  <div className="card">
-                    <div className="card-body">
-                      <ItemsNavigation />
-                      {hasRecords ? (
-                        <>
-                          <div className="toolbar mt-5 mb-2">
-                            <div className="form-inline d-flex justify-content-between">
-                              <input type="text" className="form-control" />
-                              <button
-                                className="btn btn-primary"
-                                onClick={this.handleShowAddModal}
-                              >
-                                Agregar Categoria
-                              </button>
-                            </div>
-                          </div>
-                          <SimpleTable
-                            data={categories}
-                            columns={columns}
-                            onRowClick={this.handleRowClick}
-                          />
-                        </>
-                      ) : (
-                        <EmptyState onAction={this.handleShowAddModal} />
-                      )}
-                    </div>
-                  </div>
+        <PageHeader title="Items" />
+        <div className="container-fluid mt-5">
+          <div className="row">
+            <div className="col">
+              <div className="card">
+                <div className="card-body">
+                  <ItemsNavigation />
+                  {hasRecords ? (
+                    <>
+                      <div className="toolbar mt-5 mb-2">
+                        <div className="form-inline d-flex justify-content-between">
+                          <input type="text" className="form-control" />
+                          <button
+                            className="btn btn-primary"
+                            onClick={this.handleShowAddModal}
+                          >
+                            Agregar Categoria
+                          </button>
+                        </div>
+                      </div>
+                      <SimpleTable
+                        data={categories}
+                        columns={columns}
+                        onRowClick={this.handleRowClick}
+                      />
+                    </>
+                  ) : (
+                    <EmptyState onAction={this.handleShowAddModal} />
+                  )}
                 </div>
               </div>
             </div>

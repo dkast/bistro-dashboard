@@ -85,39 +85,35 @@ class ItemsPage extends Component {
 
     return (
       <Layout>
-        <div className="page">
-          <div className="page-main">
-            <PageHeader title="Items" />
-            <div className="container-fluid mt-5">
-              <div className="row">
-                <div className="col">
-                  <div className="card">
-                    <div className="card-body">
-                      <ItemsNavigation />
-                      {hasRecords ? (
-                        <>
-                          <div className="toolbar mt-5 mb-2">
-                            <div className="form-inline d-flex justify-content-between">
-                              <input type="text" className="form-control" />
-                              <button
-                                className="btn btn-primary"
-                                onClick={this.handleCreateItem}
-                              >
-                                Crear Item
-                              </button>
-                            </div>
-                          </div>
-                          <SimpleTable
-                            data={items}
-                            columns={columns}
-                            onRowClick={this.handleRowClick}
-                          />
-                        </>
-                      ) : (
-                        <EmptyState onAction={this.handleCreateItem} />
-                      )}
-                    </div>
-                  </div>
+        <PageHeader title="Items" />
+        <div className="container-fluid mt-5">
+          <div className="row">
+            <div className="col">
+              <div className="card">
+                <div className="card-body">
+                  <ItemsNavigation />
+                  {hasRecords ? (
+                    <>
+                      <div className="toolbar mt-5 mb-2">
+                        <div className="form-inline d-flex justify-content-between">
+                          <input type="text" className="form-control" />
+                          <button
+                            className="btn btn-primary"
+                            onClick={this.handleCreateItem}
+                          >
+                            Crear Item
+                          </button>
+                        </div>
+                      </div>
+                      <SimpleTable
+                        data={items}
+                        columns={columns}
+                        onRowClick={this.handleRowClick}
+                      />
+                    </>
+                  ) : (
+                    <EmptyState onAction={this.handleCreateItem} />
+                  )}
                 </div>
               </div>
             </div>

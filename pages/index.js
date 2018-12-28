@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { PageWithAuthorization } from "../components/app";
-import { auth } from "../firebase";
 import Layout from "../components/layout";
+import PageHeader from "../components/layout/pageHeader";
 
 class Page extends Component {
   render() {
@@ -20,10 +20,7 @@ class Page extends Component {
 
 const Dashboard = props => (
   <Layout>
-    <h1>Home</h1>
-    <button className="btn btn-primary" onClick={auth.doSignOut}>
-      Sign Out
-    </button>
+    <PageHeader title="Bienvenido a Bistro!" />
   </Layout>
 );
 

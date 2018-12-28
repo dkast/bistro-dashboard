@@ -8,7 +8,7 @@ import CenterFrame from "./../components/layout/centerFrame";
 import { Link, Router } from "../routes";
 import "../static/css/bg-svg.css";
 
-const SignInPage = () => (
+const SignInPage = props => (
   <PageWithAuthentication>
     <CenterFrame>
       <div className="col-md-10 col-lg-8">
@@ -19,7 +19,7 @@ const SignInPage = () => (
               <h5 className="card-title">
                 Bienvenido, por favor ingresa con tu cuenta.
               </h5>
-              <SignInForm />
+              <SignInForm {...props} />
               <div className="mt-8" />
               <SignUpLink />
             </div>
@@ -46,6 +46,12 @@ class SignInForm extends Component {
 
   onSubmit = event => {
     const { email, password } = this.state;
+    let { routeSelected } = this.props;
+
+    // if previous selected route is one of the sign in/up pages, go to index
+    if (routeSelected.includes("sign")) {
+      routeSelected = "/";
+    }
 
     this.setState({ isSubmitting: true });
 
@@ -53,7 +59,7 @@ class SignInForm extends Component {
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState(() => ({ ...INITIAL_STATE }));
-        Router.pushRoute("/");
+        Router.pushRoute(routeSelected);
       })
       .catch(error => {
         this.setState({
@@ -138,6 +144,10 @@ const SignInLink = () => (
   </span>
 );
 
-export default connect()(SignInPage);
+const mapStateToProps = state => ({
+  routeSelected: state.uiState.routeSelected
+});
+
+export default connect(mapStateToProps)(SignInPage);
 
 export { SignInLink };

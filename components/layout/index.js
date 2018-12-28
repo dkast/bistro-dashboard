@@ -12,7 +12,11 @@ class Layout extends Component {
       <div className="wrapper">
         <NProgressStyles color="#2684ff" spinner={false} />
         <SideBar selected={routeSelected} expanded={sideBarExpanded} />
-        <div className="page-main main">{this.props.children}</div>
+        <div className="main">
+          <div className="page">
+            <div className="page-main">{this.props.children}</div>
+          </div>
+        </div>
         <style jsx>{`
           .main {
             position: relative;
