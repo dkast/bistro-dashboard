@@ -206,7 +206,12 @@ const EnhancedItemDetailPage = withFormik({
   },
   validationSchema: Yup.object().shape({
     name: Yup.string().required("Nombre es requerido"),
-    price: Yup.number().required("Precio es requerido")
+    price: Yup.number().required("Precio es requerido"),
+    category: Yup.object({
+      categoryName: Yup.string().required("Seleccione una categoria"),
+      id: Yup.string().required(),
+      owner: Yup.string().required()
+    })
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
     //alert(JSON.stringify(values, null, 2));
@@ -215,14 +220,18 @@ const EnhancedItemDetailPage = withFormik({
 
     let notificationTitle = "";
     //Substract id from values to avoid duplicate property on firebase document
-    let { id, price, ...valuesNoId } = values;
+    let { id, price, isActive, ...valuesNoId } = values;
     price = parseNumber(price);
+    if (isActive === undefined) {
+      isActive = false;
+    }
 
     switch (props.dbAction) {
       case ACT_ADD:
         props.firestore.add("items", {
           ...valuesNoId,
           price: price,
+          isActive: isActive,
           owner: props.authUser.uid
         });
         notificationTitle = "Item Creado";
@@ -231,6 +240,7 @@ const EnhancedItemDetailPage = withFormik({
         const itemUpdates = {
           ...valuesNoId,
           price: price,
+          isActive: isActive,
           updatedAt: props.firestore.FieldValue.serverTimestamp()
         };
         props.firestore.update({ collection: "items", doc: id }, itemUpdates);
@@ -261,20 +271,6 @@ class ItemForm extends Component {
 
     //Save changes to keep relation between firestore record and bucket storage
     switch (dbAction) {
-      // case ACT_ADD:
-      //   let name = values.name;
-      //   if (!name) {
-      //     name = "Sin Titulo";
-      //     setValues({ ...values, name });
-      //   }
-      //   this.props.firestore.add("items", {
-      //     ...values,
-      //     name,
-      //     imageURL,
-      //     filename,
-      //     owner: this.props.authUser.uid
-      //   });
-      //   break;
       case ACT_UPDATE:
         let { id, ...valuesNoId } = values;
         const itemUpdates = {
@@ -346,7 +342,13 @@ class ItemForm extends Component {
                     options={options}
                     onChange={setFieldValue}
                     onBlur={setFieldTouched}
+                    className={errors.category ? "is-invalid" : ""}
                   />
+                  {errors.category && (
+                    <div className="invalid-feedback d-block">
+                      {errors.category.categoryName}
+                    </div>
+                  )}
                 </div>
                 <div className="form-group col-md-12">
                   <label className="form-label">Descripcion</label>
@@ -478,6 +480,7 @@ class CategorySelect extends Component {
     } else {
       return (
         <Select
+          className={this.props.className}
           options={this.props.options}
           getOptionValue={option => option.id}
           getOptionLabel={option => option.categoryName}

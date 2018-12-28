@@ -75,7 +75,7 @@ class CategoriesPage extends Component {
   };
 
   handleDismissCategoryModal = event => {
-    this.setState({ isOpenCategoryModal: false });
+    this.setState({ ...INITIAL_STATE });
     event.preventDefault();
   };
 
@@ -184,6 +184,11 @@ class CategoriesPage extends Component {
       }? Esta operación no puede deshacerse.`;
       defaultValue = selectedRowInfo.original.categoryName;
       keyId = selectedRowInfo.original.id;
+    } else {
+      defaultValue = "";
+      keyId = Math.random()
+        .toString(36)
+        .substr(2, 5);
     }
 
     const columns = [
