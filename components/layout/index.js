@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import NProgressStyles from "next-nprogress/styles";
+// import NProgressStyles from "next-nprogress/styles";
 
 import SideBar from "../navigation/sideBar";
 
@@ -10,7 +10,7 @@ class Layout extends Component {
 
     return (
       <div className="wrapper">
-        <NProgressStyles color="#2684ff" spinner={false} />
+        {/* <NProgressStyles color="#2684ff" spinner={false} /> */}
         <SideBar selected={routeSelected} expanded={sideBarExpanded} />
         <div className="main">
           <div className="page">

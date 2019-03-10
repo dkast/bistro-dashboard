@@ -13,7 +13,7 @@ import "../static/scss/bundle.scss";
 const MS_DELAY = 200;
 const CONFIG_OPTIONS = { trickleSpeed: 50 };
 
-export default withNProgress(MS_DELAY, CONFIG_OPTIONS)(withRedux(initStore))(
+export default withRedux(initStore)(
   class MyApp extends App {
     static async getInitialProps({ Component, ctx }) {
       if (ctx.isServer) {

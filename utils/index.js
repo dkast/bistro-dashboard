@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { ReactReduxContext } from "react-redux";
 import PropTypes from "prop-types";
 
 // Create HOC that gets firestore from react context and passes it as a prop
@@ -6,17 +7,18 @@ import PropTypes from "prop-types";
 // application, use react-redux-firebase's withFirestore: https://goo.gl/4pxmPv
 const withFirestore = WrappedComponent => {
   class WithFirestore extends Component {
-    static contextTypes = {
-      store: PropTypes.object.isRequired
-    };
-
     render() {
+      const Context = ReactReduxContext;
       return (
-        <WrappedComponent
-          {...this.props}
-          dispatch={this.context.store.dispatch}
-          firestore={this.context.store.firestore}
-        />
+        <Context.Consumer>
+          {({ store }) => (
+            <WrappedComponent
+              {...this.props}
+              dispatch={store.dispatch}
+              firestore={store.firestore}
+            />
+          )}
+        </Context.Consumer>
       );
     }
   }
